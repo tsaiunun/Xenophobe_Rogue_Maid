@@ -1,0 +1,53 @@
+decision_rse_disable_maid_refining = {
+	owned_planets_only = yes
+	icon = decision_resources
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			OR = {
+				has_technology = tech_volatile_motes
+				has_technology = tech_exotic_gases
+				has_technology = tech_rare_crystals
+				has_technology = tech_mine_living_metal
+			}
+		}
+		NOT = { has_carrier_flag = rse_maid_refining_disabled }
+		num_assigned_jobs = { job = rse_mechanical_maid value > 0 }
+	}
+	effect = {
+		custom_tooltip = decision_rse_disable_maid_refining_effects
+		hidden_effect = { set_carrier_flag = rse_maid_refining_disabled }
+	}
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 100
+			owner = { has_deficit = minerals }
+		}
+	}
+}
+
+decision_rse_enable_maid_refining = {
+	owned_planets_only = yes
+	icon = decision_resources
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_carrier_flag = rse_maid_refining_disabled
+		num_assigned_jobs = { job = rse_mechanical_maid value > 0 }
+	}
+	effect = {
+		custom_tooltip = decision_rse_enable_maid_refining_effects
+		hidden_effect = { remove_carrier_flag = rse_maid_refining_disabled }
+	}
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0
+			owner = { has_deficit = minerals }
+		}
+	}
+}

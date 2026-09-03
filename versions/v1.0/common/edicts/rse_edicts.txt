@@ -1,0 +1,60 @@
+rse_maid_production_reorganization_act = {
+	# One-day duration makes this a one-shot act. A timed country flag controls
+	# its independent 360-day reuse cooldown after the immediate effect fires.
+	length = 1
+	icon = "GFX_edict_type_policy"
+
+	resources = {
+		category = edicts
+		cost = { unity = 100 }
+	}
+
+	potential = {
+		# Temporarily hidden while Maid Production is kept permanently
+		# reselectable by rse_maintenance.1 and rse_maintenance.5.
+		always = no
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_maid_reorganization_act_cooldown
+			NOT = { has_country_flag = rse_maid_reorganization_act_cooldown }
+		}
+		custom_tooltip = {
+			fail_text = rse_maid_production_policy_not_locked
+			NOR = {
+				can_set_policy = { policy = rse_maid_production_policy option = rse_maid_production_0 }
+				can_set_policy = { policy = rse_maid_production_policy option = rse_maid_production_25 }
+				can_set_policy = { policy = rse_maid_production_policy option = rse_maid_production_50 }
+				can_set_policy = { policy = rse_maid_production_policy option = rse_maid_production_75 }
+				can_set_policy = { policy = rse_maid_production_policy option = rse_maid_production_100 }
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = rse_maid_reorganization_act_effect
+		hidden_effect = {
+			# Stellaris exposes only a country-wide reset effect; this necessarily
+			# clears every currently active policy cooldown, not just the maid one.
+			reset_policy_cooldowns = yes
+			set_timed_country_flag = {
+				flag = rse_maid_reorganization_act_cooldown
+				days = 360
+			}
+		}
+	}
+
+	modifier = {}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 3
+			OR = {
+				has_deficit = consumer_goods
+				has_deficit = alloys
+			}
+		}
+	}
+}

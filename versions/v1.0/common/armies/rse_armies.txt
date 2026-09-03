@@ -1,0 +1,29 @@
+rse_combat_maid_army = {
+	damage = 2.50
+	health = 3.00
+	morale_damage = 1.50
+	collateral_damage = 0.50
+	war_exhaustion = 1.00
+	has_morale = no
+	time = 120
+	icon = GFX_army_type_robot
+	has_species = no
+	resources = {
+		category = armies
+		cost = { alloys = 250 }
+		upkeep = { energy = 3 }
+	}
+	potential_country = {
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_service_project
+	}
+	potential = { always = yes }
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_requires_maid_center
+			has_building = building_rse_maid_center
+		}
+	}
+	prerequisites = { "tech_rse_service_project" }
+	ai_weight = { base = 150 }
+}

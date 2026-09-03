@@ -1,0 +1,29 @@
+rse_urban_sanctuary_capacity = {
+	job_bio_trophy_add = 100
+	planet_housing_add = 100
+}
+
+rse_ideal_paradise_effects = {
+	pop_bio_trophy_bonus_workforce_mult = 0.50
+}
+
+rse_ideal_paradise_district_capacity = {
+	job_bio_trophy_add = 200
+	planet_housing_add = 200
+}
+
+rse_organic_simulator_scaled = {
+	bonus_pop_growth = 0.10
+}
+
+rse_intelligence_simulator_scaled = {
+	planet_stability_add = 0.10
+}
+
+rse_desire_simulator_scaled = {
+	logistic_growth_mult = 0.001
+}
+
+rse_maid_monument_scaled = {
+	logistic_growth_mult = 0.001
+}

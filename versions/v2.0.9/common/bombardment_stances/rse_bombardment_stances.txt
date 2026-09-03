@@ -1,0 +1,30 @@
+rse_sweep = {
+	trigger = {
+		owner = {
+			rse_has_exclusive_route = yes
+			has_ascension_perk = ap_rse_master_maid
+		}
+	}
+
+	default = no
+	stop_when_armies_dead = no
+	stop_when_ground_combat = no
+	abduct_pops = no
+
+	# Confirmed Q18 values. A zero population floor is allowed, but unlike
+	# Armageddon the stance never changes the planet class.
+	planet_damage = 0.75
+	army_damage = 1.00
+	kill_pop_chance = { base = 0.50 }
+	min_pops_to_kill_pop = 0
+	kill_pop_amount = { min = 0 max = 200 }
+
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0.01
+			exists = from
+			from = { owner = { NOT = { is_hostile = root.owner } } }
+		}
+	}
+}

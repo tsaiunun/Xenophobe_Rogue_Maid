@@ -1,0 +1,86 @@
+tech_rse_service_specialization = {
+	cost = @tier2cost1
+	area = society
+	category = { statecraft biology }
+	tier = 2
+	is_rare = yes
+	weight = @tier2weight1
+	icon = tech_frontier_health
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		custom_tooltip = tech_rse_service_specialization_effect
+	}
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 5 }
+}
+
+tech_rse_secret_project = {
+	cost = @tier2cost2
+	area = society
+	category = { statecraft biology }
+	tier = 2
+	is_rare = yes
+	is_reverse_engineerable = no
+	weight = @tier2weight2
+	icon = tech_cloning
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_secret_project_effect }
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 8 }
+}
+
+tech_rse_personal_records = {
+	cost = @tier3cost1
+	area = society
+	category = { statecraft biology }
+	tier = 3
+	is_rare = yes
+	weight = @tier3weight1
+	icon = tech_collective_self
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		custom_tooltip = tech_rse_personal_records_effect
+	}
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 5 }
+}
+
+tech_rse_mechanical_maids = {
+	cost = @tier4cost1
+	area = society
+	category = { statecraft biology }
+	tier = 4
+	is_rare = yes
+	weight = @tier4weight1
+	icon = tech_synthetic_workers
+	prerequisites = { "tech_rse_personal_records" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_technology_efficiency
+		custom_tooltip = tech_rse_mechanical_maids_effect
+	}
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 8 }
+}
+
+tech_rse_service_project = {
+	cost = @tier5cost1
+	area = society
+	category = { statecraft biology }
+	tier = 5
+	is_rare = yes
+	is_reverse_engineerable = no
+	weight = 0
+	icon = tech_galactic_administration
+	potential = { has_ascension_perk = ap_rse_master_maid }
+	modifier = {
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_technology_efficiency
+		custom_tooltip = tech_rse_service_project_effect
+	}
+	ai_weight = { factor = 10 }
+}

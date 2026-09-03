@@ -1,0 +1,68 @@
+# Intentional minimal vanilla-key override. This is required to keep foreign
+# organics out of Bio-Trophy citizenship on the exclusive-service route.
+citizenship_organic_trophy = {
+	potential = {
+		exists = from
+		from = {
+			is_machine_empire = yes
+			has_civic = civic_machine_servitor
+		}
+		is_disconnected_drone_pop = no
+		if = {
+			limit = { from = { has_country_flag = rse_route_exclusive_service } }
+			has_trait = trait_rse_protected_founder
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = lonely_hive_mind_pops_kill_themselves_citizenship
+			is_lonely_hive_mind_pop = no
+		}
+		custom_tooltip = {
+			fail_text = disconnected_machine_pops_kill_themselves_citizenship
+			is_disconnected_machine_pop = no
+		}
+		custom_tooltip = {
+			fail_text = not_organic
+			NOR = {
+				has_trait = trait_mechanical
+				has_trait = trait_machine_unit
+			}
+		}
+	}
+	ai_will_do = { factor = 100 }
+}
+
+# A non-trophy organic option for the exclusive route. It intentionally does
+# not grant the Bio-Trophy category or job, but lets the player retain foreign
+# organics without forcing slavery or purge.
+citizenship_rse_general_organic = {
+	# Explicitly remain outside full citizenship. Both code-side
+	# has_citizenship_rights and vanilla leader generation therefore reject it.
+	is_full_citizenship = no
+
+	potential = {
+		exists = from
+		from = {
+			rse_has_exclusive_route = yes
+			is_machine_empire = yes
+		}
+		NOR = {
+			has_trait = trait_mechanical
+			has_trait = trait_machine_unit
+			has_trait = trait_rse_protected_founder
+		}
+		is_disconnected_drone_pop = no
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = lonely_hive_mind_pops_kill_themselves_citizenship
+			is_lonely_hive_mind_pop = no
+		}
+		custom_tooltip = {
+			fail_text = disconnected_machine_pops_kill_themselves_citizenship
+			is_disconnected_machine_pop = no
+		}
+	}
+	ai_will_do = { factor = 1 }
+}

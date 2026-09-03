@@ -1,0 +1,495 @@
+namespace = rse_route
+
+# Record the actual organic secondary species created by the Rogue Servitor
+# start. A species flag has no gameplay effect and lets the later route event
+# distinguish the founders from organics acquired before first contact.
+country_event = {
+	id = rse_route.0
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { rse_is_rogue_servitor = yes }
+
+	immediate = {
+		every_owned_species = {
+			limit = {
+				is_robotic = no
+				has_living_standard = { type = living_standard_organic_trophy country = root }
+			}
+			set_species_flag = rse_founder_organic_species
+		}
+	}
+}
+
+country_event = {
+	id = rse_route.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		rse_is_rogue_servitor = yes
+		from = { rse_is_normal_organic_contact = yes }
+		OR = {
+			NOT = { has_country_flag = rse_route_chosen }
+			has_country_flag = rse_route_universal_shelter
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = rse_route_universal_shelter }
+			from = {
+				if = {
+					limit = {
+						NOT = {
+							has_opinion_modifier = {
+								who = root
+								modifier = rse_opinion_universal_shelter
+							}
+						}
+					}
+					add_opinion_modifier = {
+						who = root
+						modifier = rse_opinion_universal_shelter
+					}
+				}
+			}
+		}
+		else = {
+			country_event = { id = rse_route.2 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = rse_route.2
+	title = rse_route.2.name
+	desc = rse_route.2.desc
+	picture = GFX_evt_metropolis
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+
+	trigger = {
+		rse_is_rogue_servitor = yes
+		NOT = { has_country_flag = rse_route_chosen }
+	}
+
+	option = {
+		name = rse_route.2.a
+		ai_chance = { base = 50 }
+		set_country_flag = rse_route_chosen
+		set_country_flag = rse_route_universal_shelter
+		every_country = {
+			limit = {
+				rse_is_normal_organic_contact = yes
+				NOT = {
+					has_opinion_modifier = {
+						who = root
+						modifier = rse_opinion_universal_shelter
+					}
+				}
+			}
+			add_opinion_modifier = {
+				who = root
+				modifier = rse_opinion_universal_shelter
+			}
+		}
+	}
+
+	option = {
+		name = rse_route.2.b
+		ai_chance = { base = 50 }
+		set_country_flag = rse_route_chosen
+		set_country_flag = rse_route_exclusive_service
+		add_research_option = tech_rse_service_specialization
+		add_research_option = tech_rse_secret_project
+		set_country_flag = rse_secret_project_option_granted
+		# Founder fallback covers unusual starts where another mod creates the
+		# secondary species after on_game_start_country.
+		if = {
+			limit = {
+				NOT = { any_owned_species = { has_species_flag = rse_founder_organic_species } }
+			}
+			every_owned_species = {
+				limit = {
+					is_robotic = no
+					has_living_standard = { type = living_standard_organic_trophy country = root }
+				}
+				set_species_flag = rse_founder_organic_species
+			}
+		}
+		# Add the eligibility marker to the founder and every existing genetic
+		# template in the same species family. Using prev keeps the comparison in
+		# a valid species scope in 4.4; a saved species event target can become
+		# invalid after modify_species creates the replacement template.
+		every_owned_species = {
+			limit = { has_species_flag = rse_founder_organic_species }
+			every_galaxy_species = {
+				limit = {
+					is_same_species = prev
+					NOT = { has_trait = trait_rse_protected_founder }
+				}
+				change_species_characteristics = {
+					add_trait = trait_rse_protected_founder
+				}
+			}
+		}
+		# The protected founder is the only species permitted to remain a
+		# Bio-Trophy. Other current organics are moved to ordinary slavery; purge
+		# and other legal choices remain available through the vanilla UI.
+		every_owned_species = {
+			limit = {
+				is_robotic = no
+				has_trait = trait_rse_protected_founder
+			}
+			set_citizenship_type = {
+				country = root
+				type = citizenship_organic_trophy
+				cooldown = no
+			}
+			set_living_standard = {
+				country = root
+				type = living_standard_organic_trophy
+			}
+		}
+		every_owned_species = {
+			limit = {
+				is_robotic = no
+				NOT = { has_trait = trait_rse_protected_founder }
+				has_citizenship_type = { type = citizenship_organic_trophy country = root }
+			}
+			set_citizenship_type = {
+				country = root
+				type = citizenship_slavery
+				cooldown = no
+			}
+		}
+	}
+}
+
+namespace = rse_maintenance
+
+# A lightweight monthly repair pass handles newly-created founder templates and
+# the dynamic district/trait modifiers. It runs only for the exclusive route.
+country_event = {
+	id = rse_maintenance.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { rse_has_exclusive_route = yes }
+
+	immediate = {
+		# Temporary v1.0 workaround: unlock policies once for existing saves. The
+		# policy-change on-action below then keeps Maid Production reselectable.
+		# reset_policy_cooldowns is country-wide because Stellaris 4.4 exposes no
+		# effect for clearing the cooldown of only one policy.
+		if = {
+			limit = {
+				has_technology = tech_rse_mechanical_maids
+				NOT = { has_country_flag = rse_maid_production_always_available_initialized }
+			}
+			reset_policy_cooldowns = yes
+			set_country_flag = rse_maid_production_always_available_initialized
+			remove_country_flag = rse_maid_reorganization_act_cooldown
+		}
+		# Existing exclusive-route saves never passed through the updated choice
+		# effect, so grant their one-time Secret Project option during repair.
+		if = {
+			limit = {
+				NOT = { has_technology = tech_rse_secret_project }
+				NOT = { has_country_flag = rse_secret_project_option_granted }
+			}
+			add_research_option = tech_rse_secret_project
+			set_country_flag = rse_secret_project_option_granted
+		}
+		# Repair founder eligibility in saves created before the 1.0 hotfix, and
+		# propagate it to newly created genetic templates before rights are checked.
+		every_owned_species = {
+			limit = { has_species_flag = rse_founder_organic_species }
+			every_galaxy_species = {
+				limit = {
+					is_same_species = prev
+					NOT = { has_trait = trait_rse_protected_founder }
+				}
+				change_species_characteristics = {
+					add_trait = trait_rse_protected_founder
+				}
+			}
+		}
+		# The ascension effect is also repaired monthly so an existing save or a
+		# console-added perk cannot permanently miss its founder-machine trait.
+		if = {
+			limit = { has_ascension_perk = ap_rse_master_maid }
+			owner_main_species = {
+				every_galaxy_species = {
+					limit = {
+						is_same_species = prev
+						NOT = { has_trait = trait_rse_master_maid }
+					}
+					change_species_characteristics = {
+						add_trait = trait_rse_master_maid
+					}
+				}
+			}
+		}
+		# Enforce only the exclusive eligibility rule. Genetic templates inherit
+		# the marker trait, so this remains one country pass per month rather than
+		# one event per Pop.
+		every_owned_species = {
+			limit = {
+				is_robotic = no
+				has_trait = trait_rse_protected_founder
+				NOT = { has_citizenship_type = { type = citizenship_organic_trophy country = root } }
+			}
+			set_citizenship_type = {
+				country = root
+				type = citizenship_organic_trophy
+				cooldown = no
+			}
+			set_living_standard = {
+				country = root
+				type = living_standard_organic_trophy
+			}
+		}
+		every_owned_species = {
+			limit = {
+				is_robotic = no
+				NOT = { has_trait = trait_rse_protected_founder }
+				has_citizenship_type = { type = citizenship_organic_trophy country = root }
+			}
+			set_citizenship_type = {
+				country = root
+				type = citizenship_slavery
+				cooldown = no
+			}
+		}
+		every_owned_planet = { colony_event = { id = rse_maintenance.2 } }
+	}
+}
+
+# Temporary replacement for the unreliable one-shot reorganization edict.
+# Changing Maid Production immediately clears the newly-created policy cooldown,
+# so all five options remain available without paying unity or waiting a year.
+country_event = {
+	id = rse_maintenance.5
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_mechanical_maids
+		last_changed_policy = rse_maid_production_policy
+	}
+
+	immediate = {
+		reset_policy_cooldowns = yes
+	}
+}
+
+colony_event = {
+	id = rse_maintenance.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		# Terraforming to the Ideal Paradise is a physical one-time conversion:
+		# remove blockers, but leave all non-blocker special deposits untouched.
+		if = {
+			limit = {
+				is_planet_class = pc_rse_ideal_paradise
+				NOT = { has_carrier_flag = rse_ideal_paradise_prepared }
+			}
+			clear_blockers = yes
+			set_carrier_flag = rse_ideal_paradise_prepared
+		}
+		remove_modifier = rse_urban_sanctuary_capacity
+		remove_modifier = rse_ideal_paradise_effects
+		remove_modifier = rse_ideal_paradise_district_capacity
+		remove_modifier = rse_organic_simulator_scaled
+		remove_modifier = rse_intelligence_simulator_scaled
+		remove_modifier = rse_desire_simulator_scaled
+		remove_modifier = rse_maid_monument_scaled
+		if = {
+			limit = { is_occupied_flag = yes }
+			# Occupied colonies retain the world class and habitability, but none
+			# of the exclusive route's jobs, efficiency, or simulator effects.
+			clear_variable = rse_urban_district_count
+			clear_variable = rse_urban_district_temp
+			clear_variable = rse_ideal_district_count
+			clear_variable = rse_organic_simulator_count
+			clear_variable = rse_intelligence_simulator_count
+			clear_variable = rse_desire_simulator_count
+			clear_variable = rse_maid_monument_count
+			break = yes
+		}
+		set_variable = { which = rse_urban_district_count value = 0 }
+		# Count all urban-style districts used by normal planets and special worlds.
+		export_trigger_value_to_variable = {
+			trigger = num_districts
+			parameters = { type = district_city }
+			variable = rse_urban_district_count
+		}
+		set_variable = { which = rse_urban_district_temp value = 0 }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_nexus } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_nexus_1 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_nexus_2 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_nexus_3 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_hab_housing } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_arcology_housing } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_arcology_organic_housing } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_arcology_urban_1 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_arcology_urban_2 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_arcology_urban_3 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_rw_city } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_rw_nexus } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_rw_urban_1 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_rw_urban_2 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_rw_urban_3 } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_ring_world_organic_housing } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		export_trigger_value_to_variable = { trigger = num_districts parameters = { type = district_nexus_organic_housing } variable = rse_urban_district_temp }
+		change_variable = { which = rse_urban_district_count value = rse_urban_district_temp }
+		if = {
+			limit = {
+				NOT = { is_planet_class = pc_rse_ideal_paradise }
+				check_variable = { which = rse_urban_district_count value > 0 }
+			}
+			add_modifier = {
+				modifier = rse_urban_sanctuary_capacity
+				days = -1
+				multiplier = rse_urban_district_count
+			}
+		}
+		if = {
+			limit = { is_planet_class = pc_rse_ideal_paradise }
+			add_modifier = { modifier = rse_ideal_paradise_effects days = -1 }
+			export_trigger_value_to_variable = {
+				trigger = num_districts
+				parameters = { type = any }
+				variable = rse_ideal_district_count
+			}
+			if = {
+				limit = { check_variable = { which = rse_ideal_district_count value > 0 } }
+				add_modifier = {
+					modifier = rse_ideal_paradise_district_capacity
+					days = -1
+					multiplier = rse_ideal_district_count
+				}
+			}
+		}
+
+		# Trait effects are computed once per month and capped before the
+		# multiplier is applied, keeping them independent from pop-group splits.
+		export_trigger_value_to_variable = {
+			trigger = count_owned_pop_amount
+			parameters = { limit = { has_trait = trait_rse_organic_simulator } }
+			variable = rse_organic_simulator_count
+		}
+		divide_variable = { which = rse_organic_simulator_count value = 100 }
+		if = {
+			limit = { check_variable = { which = rse_organic_simulator_count value > 150 } }
+			set_variable = { which = rse_organic_simulator_count value = 150 }
+		}
+		if = {
+			limit = { check_variable = { which = rse_organic_simulator_count value > 0 } }
+			add_modifier = { modifier = rse_organic_simulator_scaled days = -1 multiplier = rse_organic_simulator_count }
+		}
+
+		export_trigger_value_to_variable = {
+			trigger = count_owned_pop_amount
+			parameters = { limit = { has_trait = trait_rse_intelligence_simulator } }
+			variable = rse_intelligence_simulator_count
+		}
+		divide_variable = { which = rse_intelligence_simulator_count value = 100 }
+		if = {
+			limit = { check_variable = { which = rse_intelligence_simulator_count value > 300 } }
+			set_variable = { which = rse_intelligence_simulator_count value = 300 }
+		}
+		if = {
+			limit = { check_variable = { which = rse_intelligence_simulator_count value > 0 } }
+			add_modifier = { modifier = rse_intelligence_simulator_scaled days = -1 multiplier = rse_intelligence_simulator_count }
+		}
+
+		export_trigger_value_to_variable = {
+			trigger = count_owned_pop_amount
+			parameters = { limit = { has_trait = trait_rse_desire_simulator } }
+			variable = rse_desire_simulator_count
+		}
+		divide_variable = { which = rse_desire_simulator_count value = 100 }
+		if = {
+			limit = { check_variable = { which = rse_desire_simulator_count value > 150 } }
+			set_variable = { which = rse_desire_simulator_count value = 150 }
+		}
+		if = {
+			limit = { check_variable = { which = rse_desire_simulator_count value > 0 } }
+			add_modifier = { modifier = rse_desire_simulator_scaled days = -1 multiplier = rse_desire_simulator_count }
+		}
+
+		if = {
+			limit = { has_building = building_rse_maid_monument }
+			export_trigger_value_to_variable = {
+				trigger = num_assigned_jobs
+				parameters = { job = rse_mechanical_maid }
+				variable = rse_maid_monument_count
+			}
+			divide_variable = { which = rse_maid_monument_count value = 100 }
+			if = {
+				limit = { check_variable = { which = rse_maid_monument_count value > 250 } }
+				set_variable = { which = rse_maid_monument_count value = 250 }
+			}
+			add_modifier = { modifier = rse_maid_monument_scaled days = -1 multiplier = rse_maid_monument_count }
+		}
+	}
+}
+
+# Exclusive modifiers are permanent between monthly recalculations. Remove them
+# immediately when control/ownership changes; an eligible returning owner gets
+# them back on its next monthly update.
+planet_event = {
+	id = rse_maintenance.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = rse_urban_sanctuary_capacity
+		remove_modifier = rse_ideal_paradise_effects
+		remove_modifier = rse_ideal_paradise_district_capacity
+		remove_modifier = rse_organic_simulator_scaled
+		remove_modifier = rse_intelligence_simulator_scaled
+		remove_modifier = rse_desire_simulator_scaled
+		remove_modifier = rse_maid_monument_scaled
+	}
+}
+
+# Colony transfers use the new 4.4 colony scope rather than the legacy planet
+# scope used by occupation on-actions.
+colony_event = {
+	id = rse_maintenance.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_modifier = rse_urban_sanctuary_capacity
+		remove_modifier = rse_ideal_paradise_effects
+		remove_modifier = rse_ideal_paradise_district_capacity
+		remove_modifier = rse_organic_simulator_scaled
+		remove_modifier = rse_intelligence_simulator_scaled
+		remove_modifier = rse_desire_simulator_scaled
+		remove_modifier = rse_maid_monument_scaled
+	}
+}

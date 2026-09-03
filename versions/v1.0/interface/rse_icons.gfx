@@ -1,0 +1,49 @@
+spriteTypes = {
+	# The traditions UI derives these three sprite names from the category key.
+	# Reuse the vanilla Harmony art as the v1.0 category background and emblem.
+	spriteType = {
+		name = "GFX_tradition_hex_bg_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/traditions/tradition_hex_bg_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tradition_category_bg_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/tiles/tradition_category_tile_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tradition_category_icon_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/icons/traditions/tree_icons/tradition_icon_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_exclusive_service_adopt"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_utopian_dream.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_exclusive_service_finish"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_utopian_dream.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_service_standardization"
+		textureFile = "gfx/interface/icons/traditions/tradition_cybernetics_assembly_standards.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_individual_needs_model"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_mind_and_body.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_permanent_activity_records"
+		textureFile = "gfx/interface/icons/traditions/tradition_archivism_flawless_display.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_perfect_environment_engineering"
+		textureFile = "gfx/interface/icons/traditions/tradition_adaptability_environmental_diversification.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_global_service_network"
+		textureFile = "gfx/interface/icons/traditions/tradition_domination_drone_network.dds"
+	}
+	spriteType = {
+		name = "GFX_ap_rse_master_maid"
+		texturefile = "gfx/interface/icons/ascension_perks/ap_machine_worlds.dds"
+		alwaystransparent = yes
+	}
+}

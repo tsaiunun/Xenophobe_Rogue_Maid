@@ -1,0 +1,48 @@
+tr_rse_exclusive_service_adopt = {
+	modifier = { pop_bio_trophy_bonus_workforce_mult = 0.05 }
+}
+
+tr_rse_exclusive_service_finish = {
+	modifier = {
+		ascension_perks_add = 1
+		pop_bio_trophy_bonus_workforce_mult = 0.10
+	}
+}
+
+tr_rse_service_standardization = {
+	modifier = {
+		planet_bio_trophies_upkeep_mult = -0.20
+		planet_rse_mechanical_maids_upkeep_mult = -0.20
+	}
+	ai_weight = { factor = 10 }
+}
+
+tr_rse_individual_needs_model = {
+	possible = { has_tradition = tr_rse_service_standardization }
+	modifier = { custom_tooltip = tr_rse_individual_needs_model_effect }
+	ai_weight = { factor = 10 }
+}
+
+tr_rse_permanent_activity_records = {
+	possible = { has_tradition = tr_rse_service_standardization }
+	modifier = { custom_tooltip = tr_rse_permanent_activity_records_effect }
+	ai_weight = { factor = 10 }
+}
+
+tr_rse_perfect_environment_engineering = {
+	possible = {
+		has_tradition = tr_rse_individual_needs_model
+		has_tradition = tr_rse_permanent_activity_records
+	}
+	modifier = {
+		planet_housing_mult = 0.20
+		planet_amenities_mult = 0.20
+	}
+	ai_weight = { factor = 10 }
+}
+
+tr_rse_global_service_network = {
+	possible = { has_tradition = tr_rse_perfect_environment_engineering }
+	modifier = { pop_rse_mechanical_maid_bonus_workforce_mult = 0.20 }
+	ai_weight = { factor = 10 }
+}

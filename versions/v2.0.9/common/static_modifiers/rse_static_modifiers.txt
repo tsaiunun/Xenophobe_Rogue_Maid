@@ -1,0 +1,135 @@
+rse_urban_sanctuary_capacity = {
+	job_bio_trophy_add = 100
+	planet_housing_add = 100
+}
+
+rse_ideal_paradise_effects = {
+	pop_bio_trophy_bonus_workforce_mult = 0.50
+}
+
+rse_ideal_paradise_district_capacity = {
+	job_bio_trophy_add = 200
+	planet_housing_add = 200
+}
+
+rse_organic_simulator_scaled = {
+	bonus_pop_growth = 0.10
+}
+
+rse_intelligence_simulator_scaled = {
+	planet_stability_add = 0.10
+}
+
+rse_desire_simulator_scaled = {
+	logistic_growth_mult = 0.001
+}
+
+rse_maid_monument_scaled = {
+	# Compatibility shell: 2.0.9 removes Mechanical Maid-driven organic growth.
+	# The monthly maintenance event removes any serialized pre-2.0.9 instance.
+}
+
+# 2.0.1 save-migration shells. That build could serialize these permanent
+# modifiers. They intentionally have no effect in 2.0.2 and are removed by the
+# next rse_maintenance.2 pass (also immediately on occupation/transfer).
+rse_home_service_fixed = {}
+rse_home_service_tradition_fixed = {}
+rse_activity_recorder_fixed = {}
+rse_activity_recorder_tradition_fixed = {}
+
+# V2.0 dynamic planet modifiers
+rse_server_upgrade = {
+	bonus_pop_growth = 30
+	pop_bio_trophy_bonus_workforce_mult = -0.50
+	robotic_pop_bonus_workforce_mult = -0.30
+}
+
+rse_growth_monitor_status = {
+	custom_tooltip = rse_growth_monitor_status_tooltip
+}
+
+# Local counterweights for the country-wide Organic Trophy Growth Plan. The
+# monthly maintenance event selects exactly one of these for each monitored
+# colony, leaving every unmonitored colony under the original policy effects.
+rse_growth_monitor_counter_spare = {
+	pop_bio_trophy_bonus_workforce_mult = 0.10
+	bonus_pop_growth_mult = -0.05
+}
+
+rse_growth_monitor_counter_work = {
+	pop_bio_trophy_bonus_workforce_mult = 0.20
+	bonus_pop_growth_mult = -0.15
+}
+
+rse_growth_monitor_counter_rest = {
+	pop_bio_trophy_bonus_workforce_mult = 0.35
+	bonus_pop_growth_mult = -0.20
+}
+
+rse_growth_monitor_counter_all_time = {
+	pop_bio_trophy_bonus_workforce_mult = 0.50
+	bonus_pop_growth_mult = -0.30
+}
+
+rse_growth_monitor_counter_exhaust = {
+	bonus_pop_growth_mult = -1.00
+}
+
+rse_organic_growth_stopped_bonus = {
+	# -10000% safely clamps both 4.4 organic growth channels to zero even in
+	# heavily strengthened mod lists, without touching machine assembly.
+	logistic_growth_mult = -100.0
+	bonus_pop_growth_mult = -100.0
+	organic_pop_bonus_workforce_mult = 0.10
+	custom_tooltip = rse_organic_growth_stopped_bonus_effect
+	show_only_custom_tooltip = yes
+}
+
+rse_growth_exhaust_status = {
+	custom_tooltip = rse_growth_exhaust_status_tooltip
+	show_only_custom_tooltip = yes
+}
+
+rse_labor_simulation_capacity = {
+	job_bio_trophy_add = 400
+}
+
+rse_production_participation_capacity = {
+	job_bio_trophy_add = 100
+	job_rse_visit_planner_add = 100
+}
+
+rse_maid_runaway_rejected = {
+	planet_crime_no_happiness_add = -10
+	planet_stability_add = 5
+}
+
+rse_white_leader_touring = {
+	pop_bio_trophy_bonus_workforce_mult = -0.40
+}
+
+rse_white_leader_common_sense = {
+	bonus_pop_growth_mult = 0.20
+	planet_pop_assembly_mult = 0.20
+}
+
+rse_mugwort_protocol = {
+	pop_bio_trophy_bonus_workforce_mult = 0.10
+	envoy_harm_relations_mult = 1.00
+	shipsize_corvette_build_speed_mult = 0.20
+	shipsize_frigate_build_speed_mult = 0.20
+	shipsize_destroyer_build_speed_mult = 0.20
+	shipsize_cruiser_build_speed_mult = 0.20
+	shipsize_battleship_build_speed_mult = 0.20
+	shipsize_titan_build_speed_mult = 0.20
+	shipsize_colossus_build_speed_mult = 0.20
+}
+
+rse_agenda_expand_service = {
+	planet_pop_assembly_mult = 0.25
+}
+
+rse_agenda_protocol_upgrade = {
+	pop_bio_trophy_bonus_workforce_mult = 0.10
+	planet_pop_assembly_mult = 0.50
+}

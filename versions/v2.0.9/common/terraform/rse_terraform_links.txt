@@ -1,0 +1,115 @@
+@rse_paradise_cost = 20000
+@rse_paradise_time = 3600
+
+terraform_link = {
+	from = "pc_continental"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_ocean"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_tropical"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_desert"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_arid"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_savannah"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_arctic"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_alpine"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_tundra"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_gaia"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_city"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost alloys = 5000 } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_machine"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost alloys = 5000 } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_nuked"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}
+terraform_link = {
+	from = "pc_relic"
+	to = "pc_rse_ideal_paradise"
+	resources = { category = terraforming cost = { energy = @rse_paradise_cost alloys = 5000 } }
+	duration = @rse_paradise_time
+	potential = { exists = owner owner = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 2 }
+}

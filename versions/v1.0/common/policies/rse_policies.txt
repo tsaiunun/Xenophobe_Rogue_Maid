@@ -1,0 +1,44 @@
+rse_maid_production_policy = {
+	potential = {
+		is_country_type = default
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_mechanical_maids
+	}
+
+	option = {
+		name = rse_maid_production_0
+		policy_flags = { rse_maid_production_0 }
+		modifier = {}
+		ai_weight = {
+			weight = 20
+			modifier = { factor = 5 has_deficit = consumer_goods }
+		}
+	}
+	option = {
+		name = rse_maid_production_25
+		policy_flags = { rse_maid_production_25 }
+		modifier = {}
+		ai_weight = { weight = 25 }
+	}
+	option = {
+		name = rse_maid_production_50
+		policy_flags = { rse_maid_production_50 }
+		modifier = {}
+		ai_weight = { weight = 40 }
+	}
+	option = {
+		name = rse_maid_production_75
+		policy_flags = { rse_maid_production_75 }
+		modifier = {}
+		ai_weight = { weight = 25 }
+	}
+	option = {
+		name = rse_maid_production_100
+		policy_flags = { rse_maid_production_100 }
+		modifier = {}
+		ai_weight = {
+			weight = 20
+			modifier = { factor = 5 has_deficit = alloys }
+		}
+	}
+}

@@ -1,0 +1,64 @@
+agenda_rse_expand_service = {
+	agenda_cost = 3500
+	agenda_cooldown = 3600
+
+	potential = {
+		rse_has_exclusive_route = yes
+		has_tradition = tr_rse_exclusive_service_adopt
+	}
+	allow = { always = yes }
+	modifier = {
+		# Enactment modifier is 20% of the +25% launch modifier.
+		planet_pop_assembly_mult = 0.05
+		custom_tooltip = council_agenda_agenda_rse_expand_service_enactment
+		show_only_custom_tooltip = yes
+	}
+	effect = {
+		if = {
+			limit = { NOT = { has_technology = tech_rse_service_specialization } }
+			add_tech_progress = { tech = tech_rse_service_specialization progress = 0.10 }
+		}
+		else_if = {
+			limit = { NOT = { has_technology = tech_rse_personal_records } }
+			add_tech_progress = { tech = tech_rse_personal_records progress = 0.10 }
+		}
+		else_if = {
+			limit = { NOT = { has_technology = tech_rse_mechanical_maids } }
+			add_tech_progress = { tech = tech_rse_mechanical_maids progress = 0.10 }
+		}
+	}
+	agenda_finish_modifier_duration = 1800
+	finish_modifier = rse_agenda_expand_service
+	ai_weight = {
+		base = 20
+		modifier = {
+			factor = 3
+			NAND = {
+				has_technology = tech_rse_service_specialization
+				has_technology = tech_rse_personal_records
+				has_technology = tech_rse_mechanical_maids
+			}
+		}
+	}
+}
+
+agenda_rse_protocol_upgrade = {
+	agenda_cost = 3500
+	agenda_cooldown = 3600
+
+	potential = {
+		rse_has_exclusive_route = yes
+		has_tradition = tr_rse_exclusive_service_finish
+	}
+	allow = { always = yes }
+	modifier = {
+		# Enactment modifiers are 20% of the +10%/+50% launch modifiers.
+		pop_bio_trophy_bonus_workforce_mult = 0.02
+		planet_pop_assembly_mult = 0.10
+		custom_tooltip = council_agenda_agenda_rse_protocol_upgrade_enactment
+		show_only_custom_tooltip = yes
+	}
+	agenda_finish_modifier_duration = 1800
+	finish_modifier = rse_agenda_protocol_upgrade
+	ai_weight = { base = 30 }
+}

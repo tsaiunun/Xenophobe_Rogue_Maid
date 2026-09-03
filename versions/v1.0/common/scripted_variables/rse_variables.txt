@@ -1,0 +1,20 @@
+# Rogue Servitor Enhanced v1.0 tunable values
+@rse_bio_trophy_efficiency = 0.05
+@rse_bio_trophy_finish_efficiency = 0.10
+@rse_home_service_deviation = -10
+@rse_home_service_assembly = 1.0
+@rse_home_service_tradition_assembly = 0.50
+@rse_activity_recorder_society = 20
+@rse_activity_recorder_research_efficiency = 0.02
+@rse_activity_recorder_empire_size = -0.02
+@rse_activity_recorder_tradition_society = 10
+@rse_activity_recorder_tradition_empire_size = -0.01
+@rse_maid_minerals_upkeep = 10
+@rse_maid_food_upkeep = 5
+@rse_maid_consumer_goods = 15
+@rse_maid_refinery_minerals_upkeep = 2.5
+@rse_maid_refinery_output = 0.5
+@rse_maid_center_unity = 1.25
+@rse_maid_technology_efficiency = 0.10
+@rse_maid_orbital_efficiency = 0.20
+@rse_service_job_weight = 20

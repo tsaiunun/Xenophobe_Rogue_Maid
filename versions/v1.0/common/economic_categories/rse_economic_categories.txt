@@ -1,0 +1,10 @@
+# Dedicated job category so production and upkeep modifiers affect mechanical
+# maids without also changing every vanilla artisan job.
+planet_rse_mechanical_maids = {
+	icon = "artisan_drone"
+	parent = planet_jobs_specialist
+	generate_mult_modifiers = {
+		upkeep
+	}
+	modifier_category = colony
+}
