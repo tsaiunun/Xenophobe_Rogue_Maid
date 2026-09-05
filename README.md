@@ -1,5 +1,5 @@
 # Xenophobe Rogue Maid / 失控机仆强化
-
+aka 排外機樸
 适用于 Stellaris 4.4.* 的失控机仆强化模组。
 
 目前使用的圖示等內容來自"Stellaris" 遊戲本體包含的檔案，如需修改或刪除請聯繫
