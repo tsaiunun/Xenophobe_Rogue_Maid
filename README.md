@@ -2,7 +2,12 @@
 aka 排外機樸
 适用于 Stellaris 4.4.* 的失控机仆强化模组。
 
-目前使用的圖示等內容來自"Stellaris" 遊戲本體包含的檔案，如需修改或刪除請聯繫
+目前使用的圖示等內容引用"Stellaris" 遊戲本體與DLC包含的檔案，《群星》及原版遊戲素材是由Paradox Interactive發行的內容 。
+本MOD與Paradox Interactive無任何關聯，亦未獲得其認可。
+
+This is an unofficial Stellaris mod.
+Stellaris and original game assets © Paradox Interactive AB.
+This mod is not affiliated with or endorsed by Paradox Interactive.
 
 覆蓋並重寫了活體陳設與權力邏輯，現在除了創始陳設的外星人你可以給予其一般公民權與不可接觸者。奴隸與更多生活標準在計畫中。
 ex.不是萌化模組的外星人.直接滅絕
