@@ -1,0 +1,32 @@
+ap_rse_master_maid = {
+	potential = {
+		rse_has_exclusive_route = yes
+		NOT = { has_ascension_perk = ap_rse_master_maid }
+	}
+	possible = {
+		has_technology = tech_rse_mechanical_maids
+		has_tradition = tr_rse_exclusive_service_finish
+	}
+	on_enabled = {
+		custom_tooltip = ap_rse_master_maid_tooltip
+		hidden_effect = {
+			add_research_option = tech_rse_service_project
+			owner_main_species = {
+				every_galaxy_species = {
+					limit = {
+						is_same_species = prev
+						NOT = { has_trait = trait_rse_master_maid }
+					}
+					change_species_characteristics = {
+						add_trait = trait_rse_master_maid
+					}
+				}
+			}
+		}
+	}
+	modifier = {
+		MACHINE_species_trait_picks_add = 3
+		ROBOT_species_trait_picks_add = 3
+	}
+	ai_weight = { factor = 20 }
+}

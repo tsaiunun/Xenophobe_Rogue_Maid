@@ -1,0 +1,428 @@
+namespace = rse_v2
+
+# Monthly country state machine. Counters are integers in months so the events
+# survive saving, loading and hot updates without relying on delayed scopes.
+country_event = {
+	id = rse_v2.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { rse_has_exclusive_route = yes }
+
+	immediate = {
+		if = {
+			limit = { has_ascension_perk = ap_rse_master_maid }
+			remove_modifier = rse_agenda_expand_service
+		}
+
+		# The tradition finisher contributes the same +5 monthly progress as the
+		# vanilla Transformation situation's base value, without overriding it.
+		if = {
+			limit = { has_tradition = tr_rse_exclusive_service_finish }
+			every_situation = {
+				limit = {
+					is_situation_type = situation_transformation
+					NOT = { has_situation_flag = situation_transformation_pause }
+				}
+				add_situation_progress = 5
+			}
+		}
+
+		# Hot-update migration for saves that completed the event before the
+		# first Bio-Trophy leader and the separate recruitment unlock existed.
+		if = {
+			limit = {
+				has_country_flag = rse_great_species_completed
+				NOT = { has_country_flag = rse_trophy_leader_recruitment_unlocked }
+			}
+			country_event = { id = rse_v2.51 }
+		}
+
+		# Consciousness Control is visible on every protected organic leader once
+		# its technology is known. The death replacement on_action keys from this
+		# trait instead of silently applying to unrelated leaders.
+		if = {
+			limit = { has_technology = tech_rse_mind_control }
+				every_owned_leader = {
+				limit = {
+					is_robotic_species = no
+					has_trait = leader_trait_rse_personal_service
+					NOT = { has_trait = leader_trait_rse_mind_control }
+				}
+				add_trait = { trait = leader_trait_rse_mind_control }
+			}
+		}
+
+		if = {
+			limit = {
+				NOT = { has_country_flag = rse_mugwort_completed }
+				any_owned_starbase = { has_starbase_building = rse_underground_studio }
+			}
+			change_variable = { which = rse_mugwort_months value = 1 }
+			if = {
+				limit = { check_variable = { which = rse_mugwort_months value >= 12 } }
+				country_event = { id = rse_v2.40 }
+			}
+		}
+		else = {
+			clear_variable = rse_mugwort_months
+		}
+
+		if = {
+			limit = {
+				has_technology = tech_rse_social_simulation
+				NOT = { has_country_flag = rse_great_species_completed }
+			}
+			change_variable = { which = rse_great_species_months value = 1 }
+			if = {
+				limit = { check_variable = { which = rse_great_species_months value >= 12 } }
+				country_event = { id = rse_v2.20 }
+			}
+		}
+
+		if = {
+			limit = {
+				has_policy_flag = rse_growth_all_time
+				NOT = { has_country_flag = rse_maid_runaway_resolved }
+			}
+			change_variable = { which = rse_growth_all_time_months value = 1 }
+			if = {
+				limit = { check_variable = { which = rse_growth_all_time_months value >= 12 } }
+				country_event = { id = rse_v2.30 }
+			}
+		}
+		else = {
+			set_variable = { which = rse_growth_all_time_months value = 0 }
+		}
+	}
+}
+
+country_event = {
+	id = rse_v2.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = { rse_has_exclusive_route = yes }
+
+	immediate = {
+		if = {
+			limit = {
+				last_increased_tech = tech_rse_mechanical_maids
+				NOT = { has_country_flag = rse_maid_policy_initialized_v2 }
+			}
+			set_policy = {
+				policy = rse_maid_production_policy
+				option = rse_maid_production_0
+				cooldown = no
+			}
+			set_country_flag = rse_maid_policy_initialized_v2
+		}
+		if = {
+			limit = {
+				last_increased_tech = tech_rse_drone_rotation
+				NOT = { has_country_flag = rse_activity_scope_initialized_v2 }
+			}
+			set_policy = {
+				policy = rse_activity_scope_policy
+				option = rse_activity_scope_urban
+				cooldown = no
+			}
+			set_country_flag = rse_activity_scope_initialized_v2
+		}
+		if = {
+			limit = {
+				last_increased_tech = tech_rse_desire_analysis
+				NOT = { has_country_flag = rse_growth_policy_initialized_v2 }
+			}
+			set_policy = {
+				policy = rse_organic_growth_policy
+				option = rse_growth_maintain
+				cooldown = no
+			}
+			set_country_flag = rse_growth_policy_initialized_v2
+		}
+	}
+}
+
+# Maid Production reorganization: each option bypasses only this policy's
+# normal cooldown. The edict itself is gated by a separate 360-day flag.
+country_event = {
+	id = rse_v2.10
+	title = rse_v2.10.name
+	desc = rse_v2.10.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+
+	option = {
+		name = rse_maid_production_0
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_0 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_10
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_10 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_25
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_25 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_50
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_50 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_75
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_75 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_90
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_90 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_maid_production_100
+		set_policy = { policy = rse_maid_production_policy option = rse_maid_production_100 cooldown = no }
+		set_timed_country_flag = { flag = rse_maid_reorganization_act_cooldown days = 360 }
+	}
+}
+
+# Growth-plan reorganization uses its own one-year cooldown and bypasses only
+# this policy. The hidden final option is never presented before the runaway
+# branch has explicitly unlocked it.
+country_event = {
+	id = rse_v2.60
+	title = rse_v2.60.name
+	desc = rse_v2.60.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+
+	option = {
+		name = rse_growth_maintain
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_maintain cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_growth_spare
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_spare cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_growth_work
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_work cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_growth_rest
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_rest cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_growth_all_time
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_all_time cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+	option = {
+		name = rse_growth_exhaust
+		trigger = { has_country_flag = rse_maid_runaway_accepted }
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_exhaust cooldown = no }
+		set_timed_country_flag = { flag = rse_growth_reorganization_act_cooldown days = 360 }
+	}
+}
+
+country_event = {
+	id = rse_v2.20
+	title = rse_v2.20.name
+	desc = rse_v2.20.desc
+	picture = GFX_evt_society_research
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = rse_great_species_completed
+		clear_variable = rse_great_species_months
+		add_research_option = tech_rse_mind_control
+	}
+
+	option = {
+		name = rse_v2.20.a
+		custom_tooltip = rse_v2.20.a.effect
+		hidden_effect = { country_event = { id = rse_v2.51 } }
+	}
+}
+
+# Create and mark the first Bio-Trophy leader. New games call this from
+# "A Great Species Once More"; the monthly migration also repairs older saves.
+country_event = {
+	id = rse_v2.51
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = rse_trophy_leader_recruitment_unlocked
+		if = {
+			limit = { NOT = { any_owned_leader = { has_leader_flag = rse_first_trophy_leader } } }
+			if = {
+				limit = {
+					any_owned_leader = {
+						leader_class = scientist
+						is_robotic_species = no
+						has_trait = leader_trait_rse_personal_service
+					}
+				}
+				random_owned_leader = {
+					limit = {
+						leader_class = scientist
+						is_robotic_species = no
+						has_trait = leader_trait_rse_personal_service
+					}
+					set_leader_flag = rse_first_trophy_leader
+				}
+			}
+			else = {
+				random_owned_species = {
+					limit = { has_trait = trait_rse_protected_founder }
+					save_event_target_as = rse_first_trophy_species
+				}
+				if = {
+					limit = { exists = event_target:rse_first_trophy_species }
+					create_leader = {
+						class = scientist
+						species = event_target:rse_first_trophy_species
+						name = random
+						skill = 3
+						event_leader = yes
+					}
+					last_created_leader = {
+						set_leader_flag = rse_first_trophy_leader
+						add_trait = { trait = leader_trait_rse_personal_service }
+						if = {
+							limit = { owner = { has_country_flag = rse_maid_runaway_accepted } }
+							add_trait = { trait = leader_trait_rse_regular_rest }
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = rse_v2.30
+	title = rse_v2.30.name
+	desc = rse_v2.30.desc
+	picture = GFX_evt_society_research
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = rse_maid_runaway_resolved
+		clear_variable = rse_growth_all_time_months
+	}
+
+	option = {
+		name = rse_v2.30.a
+		add_modifier = { modifier = rse_maid_runaway_rejected days = 1800 }
+	}
+	option = {
+		name = rse_v2.30.b
+		set_country_flag = rse_maid_runaway_accepted
+		every_owned_leader = {
+			limit = {
+				species = { has_trait = trait_rse_protected_founder }
+				NOT = { has_trait = leader_trait_rse_regular_rest }
+			}
+			add_trait = { trait = leader_trait_rse_regular_rest }
+		}
+	}
+}
+
+country_event = {
+	id = rse_v2.40
+	title = rse_v2.40.name
+	desc = rse_v2.40.desc
+	picture = GFX_evt_metropolis
+	show_sound = event_mystic_reveal
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = rse_mugwort_completed
+		clear_variable = rse_mugwort_months
+		add_modifier = { modifier = rse_mugwort_protocol days = -1 }
+	}
+
+	option = { name = rse_v2.40.a }
+}
+
+country_event = {
+	id = rse_v2.50
+	title = rse_v2.50.name
+	desc = rse_v2.50.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+
+	immediate = {
+		random_owned_species = {
+			limit = { has_trait = trait_rse_protected_founder }
+			save_event_target_as = rse_recruited_trophy_species
+		}
+	}
+
+	option = {
+		name = rse_v2.50.a
+		create_leader = {
+			class = official
+			species = event_target:rse_recruited_trophy_species
+			name = random
+			skill = 3
+			event_leader = yes
+		}
+		last_created_leader = {
+			add_trait = { trait = leader_trait_rse_personal_service }
+			if = {
+				limit = { owner = { has_country_flag = rse_maid_runaway_accepted } }
+				add_trait = { trait = leader_trait_rse_regular_rest }
+			}
+		}
+		set_timed_country_flag = { flag = rse_recruit_trophy_leader_cooldown days = 1800 }
+	}
+	option = {
+		name = rse_v2.50.b
+		create_leader = {
+			class = scientist
+			species = event_target:rse_recruited_trophy_species
+			name = random
+			skill = 3
+			event_leader = yes
+		}
+		last_created_leader = {
+			add_trait = { trait = leader_trait_rse_personal_service }
+			if = {
+				limit = { owner = { has_country_flag = rse_maid_runaway_accepted } }
+				add_trait = { trait = leader_trait_rse_regular_rest }
+			}
+		}
+		set_timed_country_flag = { flag = rse_recruit_trophy_leader_cooldown days = 1800 }
+	}
+	option = {
+		name = rse_v2.50.c
+		create_leader = {
+			class = commander
+			species = event_target:rse_recruited_trophy_species
+			name = random
+			skill = 3
+			event_leader = yes
+		}
+		last_created_leader = {
+			add_trait = { trait = leader_trait_rse_personal_service }
+			if = {
+				limit = { owner = { has_country_flag = rse_maid_runaway_accepted } }
+				add_trait = { trait = leader_trait_rse_regular_rest }
+			}
+		}
+		set_timed_country_flag = { flag = rse_recruit_trophy_leader_cooldown days = 1800 }
+	}
+}

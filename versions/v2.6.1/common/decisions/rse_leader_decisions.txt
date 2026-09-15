@@ -1,0 +1,40 @@
+decision_rse_white_leader = {
+	owned_planets_only = yes
+	icon = decision_machine_project
+	enactment_time = 0
+	resources = { category = decisions cost = { food = 1000 } }
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_country_flag = rse_surrounded_traits_unlocked
+			any_owned_leader = { has_trait = leader_trait_rse_public_exposure }
+		}
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_white_leader_cooldown
+			owner = { NOT = { has_country_flag = rse_white_leader_cooldown } }
+		}
+		custom_tooltip = {
+			fail_text = rse_white_leader_already_active
+			owner = { NOT = { has_country_flag = rse_white_leader_active } }
+		}
+	}
+	effect = {
+		save_event_target_as = rse_white_leader_planet
+		add_modifier = { modifier = rse_white_leader_touring days = 300 }
+		owner = {
+			random_owned_leader = {
+				limit = { has_trait = leader_trait_rse_public_exposure }
+				save_event_target_as = rse_white_leader_actor
+				exile_leader_as = rse_white_leader_actor
+			}
+			set_country_flag = rse_white_leader_active
+			set_timed_country_flag = { flag = rse_white_leader_cooldown days = 360 }
+			# Automatic delayed execution replaces the cancelable special project.
+			country_event = { id = rse_proto.241 days = 300 }
+		}
+	}
+	ai_weight = { weight = 0 }
+}

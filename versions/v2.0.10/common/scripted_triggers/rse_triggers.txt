@@ -1,0 +1,24 @@
+rse_is_rogue_servitor = {
+	is_machine_empire = yes
+	has_valid_civic = civic_machine_servitor
+}
+
+rse_has_exclusive_route = {
+	has_country_flag = rse_route_exclusive_service
+}
+
+rse_is_normal_organic_contact = {
+	is_country_type = default
+	is_gestalt = no
+	is_machine_empire = no
+	is_homicidal = no
+}
+
+# Pop/job scope. Bio-Trophy resource output and every planet modifier supplied
+# by that job share this gate so Exhaust Them can disable both consistently.
+rse_bio_trophy_effects_active = {
+	OR = {
+		owner? = { NOT = { has_policy_flag = rse_growth_exhaust } }
+		colony? = { has_carrier_flag = rse_growth_monitor_enabled }
+	}
+}

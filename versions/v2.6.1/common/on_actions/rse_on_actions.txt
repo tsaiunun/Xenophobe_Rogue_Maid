@@ -1,0 +1,45 @@
+on_game_start_country = {
+	events = { rse_route.0 }
+}
+
+on_post_communications_established = {
+	events = { rse_route.1 }
+}
+
+on_monthly_pulse_country = {
+	events = {
+		rse_maintenance.1
+		rse_v2.1
+		rse_proto.100
+	}
+}
+
+# Both death on_actions use THIS = owning country and FROM = dying leader.
+# A death fires one of the two paths depending on whether it has a notification.
+on_leader_death_notify = {
+	events = { rse_proto.20 }
+}
+
+on_leader_death_no_notify = {
+	events = { rse_proto.20 }
+}
+
+on_tech_increased = {
+	events = { rse_v2.2 }
+}
+
+on_ground_combat_started = {
+	events = { rse_defense.1 }
+}
+
+on_planet_occupied = {
+	events = { rse_maintenance.3 }
+}
+
+on_planet_returned = {
+	events = { rse_maintenance.3 }
+}
+
+on_colony_transfer = {
+	events = { rse_maintenance.4 }
+}

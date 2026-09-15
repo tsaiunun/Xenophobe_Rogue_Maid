@@ -1,0 +1,237 @@
+decision_rse_disable_maid_refining = {
+	owned_planets_only = yes
+	icon = decision_resources
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			OR = {
+				has_technology = tech_volatile_motes
+				has_technology = tech_exotic_gases
+				has_technology = tech_rare_crystals
+				has_technology = tech_mine_living_metal
+			}
+		}
+		NOT = { has_carrier_flag = rse_maid_refining_disabled }
+		num_assigned_jobs = { job = rse_mechanical_maid value > 0 }
+	}
+	effect = {
+		custom_tooltip = decision_rse_disable_maid_refining_effects
+		hidden_effect = { set_carrier_flag = rse_maid_refining_disabled }
+	}
+	ai_weight = {
+		weight = 0
+		modifier = {
+			add = 100
+			owner = { has_deficit = minerals }
+		}
+	}
+}
+
+decision_rse_enable_maid_refining = {
+	owned_planets_only = yes
+	icon = decision_resources
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_carrier_flag = rse_maid_refining_disabled
+		num_assigned_jobs = { job = rse_mechanical_maid value > 0 }
+	}
+	effect = {
+		custom_tooltip = decision_rse_enable_maid_refining_effects
+		hidden_effect = { remove_carrier_flag = rse_maid_refining_disabled }
+	}
+	ai_weight = {
+		weight = 10
+		modifier = {
+			factor = 0
+			owner = { has_deficit = minerals }
+		}
+	}
+}
+
+# V2.0 organic-growth controls ---------------------------------------------
+
+decision_rse_stop_organic_growth = {
+	owned_planets_only = yes
+	icon = decision_politics
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		NOT = { has_modifier = rse_organic_growth_stopped_bonus }
+	}
+	effect = {
+		# Independent from the vanilla gestalt population-control decision:
+		# organic growth and machine assembly can be stopped separately.
+		add_modifier = { modifier = rse_organic_growth_stopped_bonus days = -1 }
+	}
+	ai_weight = {
+		weight = 5
+		modifier = { factor = 0 free_housing > 500 }
+	}
+}
+
+decision_rse_resume_organic_growth = {
+	owned_planets_only = yes
+	icon = decision_politics
+	enactment_time = 0
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_modifier = rse_organic_growth_stopped_bonus
+	}
+	effect = {
+		remove_modifier = rse_organic_growth_stopped_bonus
+	}
+	ai_weight = {
+		weight = 10
+		modifier = { factor = 0 free_housing < 100 }
+	}
+}
+
+decision_rse_server_upgrade = {
+	owned_planets_only = yes
+	icon = decision_machine_project
+	enactment_time = 0
+	resources = {
+		category = decisions
+		cost = { minerals = 1000 food = 1000 }
+	}
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_country_flag = rse_maid_runaway_accepted
+		}
+		NOT = { has_modifier = rse_server_upgrade }
+	}
+	effect = { add_modifier = { modifier = rse_server_upgrade days = 1800 } }
+	ai_weight = {
+		weight = 20
+		modifier = { factor = 0 owner = { OR = { has_deficit = minerals has_deficit = food } } }
+	}
+}
+
+decision_rse_enable_growth_monitor = {
+	owned_planets_only = yes
+	icon = decision_machine_project
+	enactment_time = 0
+	resources = {
+		category = decisions
+		cost = { unity = 1000 }
+	}
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_country_flag = rse_maid_runaway_accepted
+		}
+		NOT = { has_carrier_flag = rse_growth_monitor_enabled }
+	}
+	effect = {
+		set_carrier_flag = rse_growth_monitor_enabled
+		add_modifier = { modifier = rse_growth_monitor_status days = -1 }
+		# The policy remains a country choice. This planet receives an equal and
+		# opposite local modifier so only this colony returns to the 0/0 baseline.
+		if = {
+			limit = { owner = { has_policy_flag = rse_growth_spare } }
+			add_modifier = { modifier = rse_growth_monitor_counter_spare days = -1 }
+		}
+		if = {
+			limit = { owner = { has_policy_flag = rse_growth_work } }
+			add_modifier = { modifier = rse_growth_monitor_counter_work days = -1 }
+		}
+		if = {
+			limit = { owner = { has_policy_flag = rse_growth_rest } }
+			add_modifier = { modifier = rse_growth_monitor_counter_rest days = -1 }
+		}
+		if = {
+			limit = { owner = { has_policy_flag = rse_growth_all_time } }
+			add_modifier = { modifier = rse_growth_monitor_counter_all_time days = -1 }
+		}
+		if = {
+			limit = { owner = { has_policy_flag = rse_growth_exhaust } }
+			add_modifier = { modifier = rse_growth_monitor_counter_exhaust days = -1 }
+		}
+	}
+	ai_weight = { weight = 0 }
+}
+
+decision_rse_disable_growth_monitor = {
+	owned_planets_only = yes
+	icon = decision_machine_project
+	enactment_time = 0
+	potential = { has_carrier_flag = rse_growth_monitor_enabled }
+	effect = {
+		remove_carrier_flag = rse_growth_monitor_enabled
+		remove_modifier = rse_growth_monitor_status
+		remove_modifier = rse_growth_monitor_counter_spare
+		remove_modifier = rse_growth_monitor_counter_work
+		remove_modifier = rse_growth_monitor_counter_rest
+		remove_modifier = rse_growth_monitor_counter_all_time
+		remove_modifier = rse_growth_monitor_counter_exhaust
+	}
+	ai_weight = { weight = 0 }
+}
+
+# V2.0 district-specialization compatibility interface ---------------------
+
+decision_rse_specialize_labor_simulation = {
+	owned_planets_only = yes
+	icon = decision_arcology_project
+	enactment_time = 0
+	resources = { category = decisions cost = { unity = 500 } }
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_social_simulation
+		}
+		NOT = { has_carrier_flag = rse_specialization_labor }
+	}
+	effect = {
+		remove_carrier_flag = rse_specialization_production
+		set_carrier_flag = rse_specialization_labor
+	}
+	ai_weight = { weight = 30 }
+}
+
+decision_rse_specialize_production_participation = {
+	owned_planets_only = yes
+	icon = decision_arcology_project
+	enactment_time = 0
+	resources = { category = decisions cost = { unity = 500 } }
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_social_simulation
+		}
+		NOT = { has_carrier_flag = rse_specialization_production }
+	}
+	effect = {
+		remove_carrier_flag = rse_specialization_labor
+		set_carrier_flag = rse_specialization_production
+	}
+	ai_weight = { weight = 30 }
+}
+
+decision_rse_clear_service_specialization = {
+	owned_planets_only = yes
+	icon = decision_arcology_project
+	enactment_time = 0
+	potential = {
+		OR = {
+			has_carrier_flag = rse_specialization_labor
+			has_carrier_flag = rse_specialization_production
+		}
+	}
+	effect = {
+		remove_carrier_flag = rse_specialization_labor
+		remove_carrier_flag = rse_specialization_production
+	}
+	ai_weight = { weight = 0 }
+}

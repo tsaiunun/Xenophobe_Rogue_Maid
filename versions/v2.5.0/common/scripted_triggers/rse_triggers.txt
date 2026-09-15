@@ -1,0 +1,46 @@
+rse_is_rogue_servitor = {
+	is_machine_empire = yes
+	has_valid_civic = civic_machine_servitor
+}
+
+rse_has_exclusive_route = {
+	has_country_flag = rse_route_exclusive_service
+}
+
+rse_is_normal_organic_contact = {
+	is_country_type = default
+	is_gestalt = no
+	is_machine_empire = no
+	is_homicidal = no
+}
+
+# Pop/job scope. Bio-Trophy resource output and every planet modifier supplied
+# by that job share this gate so Exhaust Them can disable both consistently.
+rse_bio_trophy_effects_active = {
+	OR = {
+		owner? = { NOT = { has_policy_flag = rse_growth_exhaust } }
+		colony? = { has_carrier_flag = rse_growth_monitor_enabled }
+	}
+}
+
+# Intentional minimal vanilla-key override for custom-planet compatibility.
+# The 4.4.6 whitelist is preserved and Ideal Paradise is added so rare organic
+# deposits (including the Exotic Gas Capture sources) survive and validate.
+can_have_habitable_deposits = {
+	OR = {
+		is_planet_class = pc_nuked
+		is_planet_class = pc_desert
+		is_planet_class = pc_tropical
+		is_planet_class = pc_arid
+		is_planet_class = pc_continental
+		is_planet_class = pc_ocean
+		is_planet_class = pc_tundra
+		is_planet_class = pc_arctic
+		is_planet_class = pc_alpine
+		is_planet_class = pc_savannah
+		is_planet_class = pc_gaia
+		is_planet_class = pc_relic
+		is_planet_class = pc_volcanic
+		is_planet_class = pc_rse_ideal_paradise
+	}
+}

@@ -1,0 +1,146 @@
+rse_maid_production_policy = {
+	potential = {
+		is_country_type = default
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_mechanical_maids
+	}
+
+	option = {
+		name = rse_maid_production_0
+		policy_flags = { rse_maid_production_0 }
+		modifier = {}
+		ai_weight = {
+			weight = 20
+			modifier = { factor = 5 has_deficit = consumer_goods }
+		}
+	}
+	option = {
+		name = rse_maid_production_10
+		policy_flags = { rse_maid_production_10 }
+		modifier = {}
+		ai_weight = { weight = 20 }
+	}
+	option = {
+		name = rse_maid_production_25
+		policy_flags = { rse_maid_production_25 }
+		modifier = {}
+		ai_weight = { weight = 25 }
+	}
+	option = {
+		name = rse_maid_production_50
+		policy_flags = { rse_maid_production_50 }
+		modifier = {}
+		ai_weight = { weight = 40 }
+	}
+	option = {
+		name = rse_maid_production_75
+		policy_flags = { rse_maid_production_75 }
+		modifier = {}
+		ai_weight = { weight = 25 }
+	}
+	option = {
+		name = rse_maid_production_90
+		policy_flags = { rse_maid_production_90 }
+		modifier = {}
+		ai_weight = { weight = 20 }
+	}
+	option = {
+		name = rse_maid_production_100
+		policy_flags = { rse_maid_production_100 }
+		modifier = {}
+		ai_weight = {
+			weight = 20
+			modifier = { factor = 5 has_deficit = alloys }
+		}
+	}
+}
+
+rse_activity_scope_policy = {
+	potential = {
+		is_country_type = default
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_drone_rotation
+	}
+
+	option = {
+		name = rse_activity_scope_urban
+		policy_flags = { rse_activity_scope_urban }
+		modifier = {}
+		ai_weight = { weight = 40 }
+	}
+	option = {
+		name = rse_activity_scope_unrestricted
+		policy_flags = { rse_activity_scope_unrestricted }
+		modifier = {}
+		ai_weight = { weight = 50 }
+	}
+	option = {
+		name = rse_activity_scope_rural
+		policy_flags = { rse_activity_scope_rural }
+		modifier = {}
+		ai_weight = {
+			weight = 30
+			modifier = { factor = 2 is_at_war = yes }
+		}
+	}
+}
+
+rse_organic_growth_policy = {
+	potential = {
+		is_country_type = default
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_desire_analysis
+	}
+
+	option = {
+		name = rse_growth_maintain
+		policy_flags = { rse_growth_maintain }
+		modifier = {}
+		ai_weight = { weight = 30 }
+	}
+	option = {
+		name = rse_growth_spare
+		policy_flags = { rse_growth_spare }
+		modifier = {
+			pop_bio_trophy_bonus_workforce_mult = -0.10
+			bonus_pop_growth_mult = 0.05
+		}
+		ai_weight = { weight = 35 }
+	}
+	option = {
+		name = rse_growth_work
+		policy_flags = { rse_growth_work }
+		modifier = {
+			pop_bio_trophy_bonus_workforce_mult = -0.20
+			bonus_pop_growth_mult = 0.15
+		}
+		ai_weight = { weight = 45 }
+	}
+	option = {
+		name = rse_growth_rest
+		policy_flags = { rse_growth_rest }
+		modifier = {
+			pop_bio_trophy_bonus_workforce_mult = -0.35
+			bonus_pop_growth_mult = 0.20
+		}
+		ai_weight = { weight = 25 }
+	}
+	option = {
+		name = rse_growth_all_time
+		policy_flags = { rse_growth_all_time }
+		modifier = {
+			pop_bio_trophy_bonus_workforce_mult = -0.50
+			bonus_pop_growth_mult = 0.30
+		}
+		ai_weight = { weight = 10 }
+	}
+	option = {
+		name = rse_growth_exhaust
+		potential = { has_country_flag = rse_maid_runaway_accepted }
+		policy_flags = { rse_growth_exhaust }
+		modifier = {
+			bonus_pop_growth_mult = 1.00
+		}
+		ai_weight = { weight = 0 }
+	}
+}

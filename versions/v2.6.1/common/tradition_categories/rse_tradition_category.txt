@@ -1,0 +1,20 @@
+tradition_rse_exclusive_service = {
+	tree_template = "tree_11_111"
+	adoption_bonus = "tr_rse_exclusive_service_adopt"
+	finish_bonus = "tr_rse_exclusive_service_finish"
+	traditions = {
+		"tr_rse_service_standardization"
+		"tr_rse_individual_needs_model"
+		"tr_rse_permanent_activity_records"
+		"tr_rse_perfect_environment_engineering"
+		"tr_rse_global_service_network"
+	}
+	potential = { rse_has_exclusive_route = yes }
+	ai_weight = {
+		factor = 10
+		modifier = { factor = 2 has_technology = tech_rse_service_specialization }
+		modifier = { factor = 2 has_technology = tech_rse_personal_records }
+		modifier = { factor = 3 has_technology = tech_rse_mechanical_maids }
+	}
+}
+

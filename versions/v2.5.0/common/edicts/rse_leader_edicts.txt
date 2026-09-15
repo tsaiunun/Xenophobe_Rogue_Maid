@@ -1,0 +1,19 @@
+rse_portable_space_utilization = {
+	length = -1
+	icon = "GFX_edict_type_policy"
+	resources = {
+		category = edicts
+		upkeep = { energy = 10 food = 10 }
+	}
+	potential = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_portable_space_unlocked
+	}
+	modifier = {
+		planet_pops_robotics_upkeep_mult = -0.15
+		robotic_pop_bonus_workforce_mult = 0.05
+		pop_category_bio_trophy_food_upkeep_add = 0.30
+		pop_category_bio_trophy_consumer_goods_upkeep_add = 0.30
+	}
+	ai_weight = { weight = 20 }
+}

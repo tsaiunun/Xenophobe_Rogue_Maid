@@ -1,0 +1,140 @@
+trait_rse_protected_founder = {
+	cost = 0
+	initial = no
+	randomized = no
+	hidden = yes
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	tags = { special }
+	icon = "gfx/interface/icons/traits/trait_presapient_natural_intellectuals.dds"
+	modifier = { pop_happiness = 0.50 }
+	species_possible_remove = { always = no }
+	ai_weight = { weight = 0 }
+}
+
+trait_rse_master_maid = {
+	cost = -3
+	category = robotic
+	initial = no
+	randomized = no
+	allowed_archetypes = { MACHINE ROBOT }
+	tags = { machine positive pop_output habitability special }
+	icon = "gfx/interface/icons/traits/trait_robot_domestic_protocols.dds"
+	modifier = {
+		pop_bonus_workforce_mult = 0.20
+		pop_environment_tolerance = 0.30
+		species_empire_size_mult = -0.20
+	}
+	species_potential_add = { from = { has_ascension_perk = ap_rse_master_maid } }
+	species_possible_remove = { always = no }
+	ai_weight = { weight = 0 }
+}
+
+trait_rse_organic_simulator = {
+	cost = 1
+	category = robotic
+	initial = no
+	randomized = no
+	allowed_archetypes = { MACHINE ROBOT }
+	tags = { machine positive pop_growth }
+	icon = "gfx/interface/icons/traits/trait_robot_repurposed_hardware.dds"
+	species_potential_add = { from = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 20 }
+}
+
+trait_rse_intelligence_simulator = {
+	cost = 1
+	category = robotic
+	initial = no
+	randomized = no
+	allowed_archetypes = { MACHINE ROBOT }
+	tags = { machine positive }
+	icon = "gfx/interface/icons/traits/trait_robot_logic_engines.dds"
+	species_potential_add = { from = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 20 }
+}
+
+trait_rse_desire_simulator = {
+	cost = 1
+	category = robotic
+	initial = no
+	randomized = no
+	allowed_archetypes = { MACHINE ROBOT }
+	tags = { machine positive pop_growth }
+	icon = "gfx/interface/icons/traits/trait_robot_emotion_emulators.dds"
+	species_potential_add = { from = { has_ascension_perk = ap_rse_master_maid } }
+	ai_weight = { weight = 20 }
+}
+
+# V2.0 leader traits --------------------------------------------------------
+
+leader_trait_rse_personal_service = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = {
+		species_leader_exp_gain = 0.30
+		negative_traits_leader = -2
+		leader_lifespan_add = 40
+	}
+	triggered_self_modifier = {
+		potential = {
+			exists = owner
+			owner = { has_country_flag = rse_public_exposure_network }
+		}
+		species_leader_exp_gain = 0.15
+	}
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}
+
+leader_trait_rse_regular_rest = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = {
+		species_leader_exp_gain = 0.30
+		leader_lifespan_add = 10
+	}
+	inline_script = {
+		script = paragon/leader_resource_upkeep
+		RESOURCE = food
+		AMOUNT = 10
+	}
+	inline_script = {
+		script = paragon/leader_resource_upkeep
+		RESOURCE = consumer_goods
+		AMOUNT = 10
+	}
+	custom_tooltip_with_modifiers = leader_trait_rse_regular_rest_upkeep
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}
+
+leader_trait_rse_mind_control = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_firewalled"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}

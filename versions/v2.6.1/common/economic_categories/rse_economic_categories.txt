@@ -1,0 +1,91 @@
+# Dedicated job category so production and upkeep modifiers affect mechanical
+# maids without also changing every vanilla artisan job.
+planet_rse_mechanical_maids = {
+	icon = "artisan_drone"
+	parent = planet_jobs_specialist
+	generate_mult_modifiers = {
+		upkeep
+	}
+	# Same mechanism as vanilla Knights inheriting Soldier modifiers: the
+	# workshop adds the Artisan modifier family without changing job slots.
+	triggered_produces_modifier = {
+		key = planet_artisans
+		modifier_types = { mult add }
+		trigger = {
+			exists = planet
+			planet = { has_active_building = building_rse_maid_workshop_coordination }
+		}
+		use_parent_icon = yes
+	}
+	triggered_upkeep_modifier = {
+		key = planet_artisans
+		modifier_types = { mult add }
+		trigger = {
+			exists = planet
+			planet = { has_active_building = building_rse_maid_workshop_coordination }
+		}
+		use_parent_icon = yes
+	}
+	modifier_category = colony
+}
+
+# Activity Recorders boost vanilla researcher jobs, so their own Society output
+# must not belong to planet_researchers. This sibling category keeps the output
+# in the normal resource economy while breaking the self-amplifying feedback.
+planet_rse_activity_recorders = {
+	icon = "brain_drone"
+	parent = planet_jobs_specialist
+	generate_mult_modifiers = {
+		produces
+		upkeep
+	}
+	modifier_category = colony
+}
+
+planet_rse_home_services = {
+	icon = "maintenance_drone"
+	parent = planet_jobs_specialist
+	generate_mult_modifiers = {
+		upkeep
+	}
+	# Maid Base/Center conditionally add the Enforcer economic modifier family
+	# used for Hunter-Seeker style security work. No job capacity is converted.
+	triggered_produces_modifier = {
+		key = planet_enforcers
+		modifier_types = { mult add }
+		trigger = {
+			exists = planet
+			planet = {
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+		}
+		use_parent_icon = yes
+	}
+	triggered_upkeep_modifier = {
+		key = planet_enforcers
+		modifier_types = { mult add }
+		trigger = {
+			exists = planet
+			planet = {
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+		}
+		use_parent_icon = yes
+	}
+	modifier_category = colony
+}
+
+# Separate category for future "榨汁中" modifiers. It intentionally does not
+# inherit planet_jobs or planet_bio_trophies, so no production modifier leaks
+# in from the normal Bio-Trophy job.
+planet_rse_exhausted_bio_trophies = {
+	icon = "job_bio_trophy"
+	parent = planets
+	modifier_category = colony
+}

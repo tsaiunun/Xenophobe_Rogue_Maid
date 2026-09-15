@@ -1,0 +1,50 @@
+# Dedicated service stratum for the four feedback-sensitive support jobs.
+# It mirrors the basic rank/assignment behaviour of complex drones but does not
+# include the vanilla complex-drone triggered-modifier bundle. Only the robotic
+# population-efficiency bridge is deliberately retained here.
+rse_servitor = {
+	# Rank 4 places this above rank-3 Complex Drones. This file loads after
+	# vanilla 02_other_categories, so the stable same-rank order keeps the
+	# previously registered Bio-Trophy row first.
+	rank = 4
+	change_job_threshold = 1.03
+	job_reshuffle_interval = 7
+
+	weight = {
+		weight = 2
+	}
+
+	automation_resources = {
+		category = planet_automated_jobs
+		upkeep = {
+			energy = @automation_upkeep_complex
+		}
+	}
+
+	pop_group_modifier = {
+		pop_housing_usage_base = 1
+		pop_amenities_usage_no_happiness_base = 1
+	}
+
+	allow_resettlement = {
+		always = yes
+	}
+
+	inline_script = "pop_categories/resettlement_costs"
+
+	# This is the only category-level workforce bridge. Direct modifiers on a
+	# species or Pop still apply normally, but complex-drone/category bonuses do
+	# not cross into this stratum.
+	triggered_pop_group_modifier = {
+		potential = {
+			is_robotic_species = yes
+		}
+		key = mod_robotic_pop_bonus_workforce_mult
+		pop_bonus_workforce_mult = 1
+		mult = colony.modifier:robotic_pop_bonus_workforce_mult
+	}
+
+	resources = {
+		category = pop_category_drones
+	}
+}

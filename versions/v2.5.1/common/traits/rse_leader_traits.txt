@@ -1,0 +1,162 @@
+# Formal V2 leader traits unlocked by the two-stage surrounded event.
+
+leader_trait_rse_bridal = {
+	leader_trait_type = destiny
+	initial = no
+	randomized = yes
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = { leader_skill_add = 3 }
+	on_gained_effect = { set_immortal = yes }
+	leader_potential_add = {
+		is_robotic_species = yes
+		has_base_skill > 4
+		exists = owner
+		owner = { has_country_flag = rse_surrounded_traits_unlocked }
+	}
+	leader_class = { commander scientist official }
+	opposites = { leader_trait_rse_public_exposure leader_trait_rse_portable_jar }
+	selectable_weight = 100
+	background_icon = "GFX_leader_background_destiny_1"
+}
+
+leader_trait_rse_public_exposure = {
+	leader_trait_type = destiny
+	initial = no
+	randomized = yes
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = { species_leader_exp_gain = 0.50 }
+	leader_potential_add = {
+		is_robotic_species = yes
+		has_base_skill > 4
+		exists = owner
+		owner = { has_country_flag = rse_surrounded_traits_unlocked }
+	}
+	leader_class = { commander scientist official }
+	opposites = { leader_trait_rse_bridal leader_trait_rse_portable_jar }
+	selectable_weight = 100
+	background_icon = "GFX_leader_background_destiny_1"
+}
+
+leader_trait_rse_portable_jar = {
+	leader_trait_type = destiny
+	initial = no
+	randomized = yes
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = paragon
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = {
+		leader_skill_add = 1
+		leader_lifespan_mult = 0.50
+	}
+	leader_potential_add = {
+		is_robotic_species = yes
+		has_base_skill > 4
+		exists = owner
+		owner = { has_country_flag = rse_surrounded_traits_unlocked }
+	}
+	leader_class = { commander scientist official }
+	opposites = { leader_trait_rse_bridal leader_trait_rse_public_exposure }
+	selectable_weight = 100
+	background_icon = "GFX_leader_background_destiny_1"
+}
+
+leader_trait_rse_erotic_simulator = {
+	initial = no
+	randomized = no
+	force_councilor_trait = yes
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_gifted"
+		RARITY = paragon
+		COUNCIL = yes
+		TIER = none
+	}
+	self_modifier = {
+		species_leader_exp_gain = 0.10
+		councilor_exp_gain = 0.10
+		councilor_skill_add = 3
+		leader_trait_selection_options_add = 3
+	}
+	leader_potential_add = {
+		is_ruler = yes
+		exists = owner
+		owner = { has_country_flag = rse_surrounded_traits_unlocked }
+	}
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}
+
+# Machine-only country-wide +3 selection helper. Scripted assignment lets the
+# bonus cover existing and newly recruited leaders without affecting organic
+# Bio-Trophy leaders.
+leader_trait_rse_expanded_selection = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_gifted"
+		RARITY = common
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = { leader_trait_selection_options_add = 3 }
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}
+
+# Applied only to other mechanical leaders while at least one portable-jar
+# holder exists. The holder itself is explicitly excluded by monthly upkeep.
+leader_trait_rse_portable_jar_network = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_gifted"
+		RARITY = common
+		COUNCIL = no
+		TIER = none
+	}
+	self_modifier = {
+		species_leader_exp_gain = 0.10
+		leaders_upkeep_mult = -0.10
+	}
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}
+
+leader_trait_rse_surrounded_pending = {
+	initial = no
+	randomized = no
+	inline_script = {
+		script = trait/icon
+		CLASS = leader
+		ICON = "GFX_leader_trait_emotional_support_pet"
+		RARITY = common
+		COUNCIL = no
+		TIER = none
+	}
+	leader_class = { commander scientist official }
+	selectable_weight = 0
+}

@@ -1,0 +1,74 @@
+spriteTypes = {
+	spriteType = {
+		name = "GFX_fleet_order_button_ground_support_rse_sweep"
+		texturefile = "gfx/interface/fleet_view/fleet_task_ground_support_armageddon_action.dds"
+		effectFile = "gfx/FX/buttonstate.shader"
+		noOfFrames = 3
+	}
+	spriteType = {
+		name = "GFX_fleet_order_button_ground_support_rse_sweep_selected"
+		texturefile = "gfx/interface/fleet_view/fleet_task_ground_support_armageddon_selected.dds"
+		effectFile = "gfx/FX/buttonstate.shader"
+		noOfFrames = 3
+	}
+	spriteType = {
+		name = "GFX_planet_modifier_ground_support_rse_sweep"
+		sprite_sheet_sprite_type = "GFX_planet_view_bombarded"
+		default_frame = 3
+	}
+	# The traditions UI derives these three sprite names from the category key.
+	# Reuse the vanilla Harmony art as the v1.0 category background and emblem.
+	spriteType = {
+		name = "GFX_tradition_hex_bg_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/traditions/tradition_hex_bg_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tradition_category_bg_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/tiles/tradition_category_tile_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tradition_category_icon_tradition_rse_exclusive_service"
+		textureFile = "gfx/interface/icons/traditions/tree_icons/tradition_icon_harmony.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_exclusive_service_adopt"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_utopian_dream.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_exclusive_service_finish"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_utopian_dream.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_service_standardization"
+		textureFile = "gfx/interface/icons/traditions/tradition_cybernetics_assembly_standards.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_individual_needs_model"
+		textureFile = "gfx/interface/icons/traditions/tradition_harmony_mind_and_body.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_permanent_activity_records"
+		textureFile = "gfx/interface/icons/traditions/tradition_archivism_flawless_display.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_perfect_environment_engineering"
+		textureFile = "gfx/interface/icons/traditions/tradition_adaptability_environmental_diversification.dds"
+	}
+	spriteType = {
+		name = "GFX_tr_rse_global_service_network"
+		textureFile = "gfx/interface/icons/traditions/tradition_domination_drone_network.dds"
+	}
+	spriteType = {
+		name = "GFX_ap_rse_master_maid"
+		texturefile = "gfx/interface/icons/ascension_perks/ap_machine_worlds.dds"
+		alwaystransparent = yes
+	}
+	spriteType = {
+		name = "GFX_council_agenda_icon_agenda_rse_expand_service"
+		texturefile = "gfx/interface/icons/agenda_icons/agenda_gestalt_boost_growth.dds"
+	}
+	spriteType = {
+		name = "GFX_council_agenda_icon_agenda_rse_protocol_upgrade"
+		texturefile = "gfx/interface/icons/agenda_icons/agenda_gestalt_reformat_growth.dds"
+	}
+}

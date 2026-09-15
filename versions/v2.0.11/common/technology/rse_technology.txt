@@ -1,0 +1,227 @@
+tech_rse_service_specialization = {
+	cost = @tier3cost1
+	area = society
+	category = { statecraft biology }
+	tier = 3
+	is_rare = yes
+	weight = @tier3weight1
+	icon = tech_frontier_health
+	prerequisites = { "tech_rse_personal_records" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		custom_tooltip = tech_rse_service_specialization_effect
+	}
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 5 }
+}
+
+tech_rse_secret_project = {
+	cost = @tier2cost2
+	area = society
+	category = { statecraft biology }
+	tier = 2
+	is_rare = yes
+	is_reverse_engineerable = no
+	weight = @tier2weight2
+	icon = tech_cloning
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_secret_project_effect }
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 8 }
+}
+
+tech_rse_personal_records = {
+	cost = @tier2cost1
+	area = society
+	category = { statecraft biology }
+	tier = 2
+	is_rare = yes
+	weight = @tier2weight1
+	icon = tech_collective_self
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		custom_tooltip = tech_rse_personal_records_effect
+	}
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 5 }
+}
+
+tech_rse_mechanical_maids = {
+	cost = @tier4cost1
+	area = society
+	category = { statecraft biology }
+	tier = 4
+	is_rare = yes
+	weight = @tier4weight1
+	icon = tech_synthetic_workers
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_bio_trophy_bonus_workforce_mult = @rse_bio_trophy_efficiency
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_technology_efficiency
+		custom_tooltip = tech_rse_mechanical_maids_effect
+	}
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 8 }
+}
+
+tech_rse_service_project = {
+	cost = @tier5cost1
+	area = society
+	category = { statecraft biology }
+	tier = 5
+	is_rare = yes
+	is_reverse_engineerable = no
+	weight = 0
+	icon = tech_galactic_administration
+	potential = {
+		OR = {
+			has_ascension_perk = ap_rse_master_maid
+			has_country_flag = rse_proto_ap_bypass
+		}
+	}
+	modifier = {
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_technology_efficiency
+		custom_tooltip = tech_rse_service_project_effect
+	}
+	ai_weight = { factor = 10 }
+}
+
+# V2.0 technology branch ----------------------------------------------------
+
+tech_rse_drone_rotation = {
+	cost = @tier3cost2
+	area = society
+	category = { statecraft }
+	tier = 3
+	is_rare = yes
+	weight = @tier3weight2
+	icon = tech_collective_self
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_drone_rotation_effect }
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 6 }
+}
+
+tech_rse_planetary_service_project = {
+	cost = @tier4cost2
+	area = society
+	category = { statecraft }
+	tier = 4
+	is_rare = yes
+	weight = @tier4weight2
+	icon = tech_galactic_administration
+	prerequisites = { "tech_rse_mechanical_maids" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_planetary_service_project_effect }
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 7 }
+}
+
+tech_rse_organic_mind_deconstruction = {
+	cost = @tier4cost2
+	area = society
+	category = { biology statecraft }
+	tier = 4
+	is_rare = yes
+	weight = @tier4weight2
+	icon = tech_neural_implants
+	prerequisites = { "tech_rse_service_specialization" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_organic_mind_deconstruction_effect }
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 7 }
+}
+
+tech_rse_social_simulation = {
+	cost = @tier5cost1
+	area = society
+	category = { statecraft biology }
+	tier = 5
+	is_rare = yes
+	weight = @tier5weight1
+	icon = tech_galactic_administration
+	prerequisites = {
+		"tech_rse_planetary_service_project"
+		"tech_rse_organic_mind_deconstruction"
+		"tech_rse_drone_rotation"
+	}
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_social_simulation_effect }
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 9 }
+}
+
+tech_rse_maid_service = {
+	cost = @tier3cost2
+	area = society
+	category = { biology statecraft }
+	tier = 3
+	is_rare = yes
+	weight = @tier3weight2
+	icon = tech_cloning
+	prerequisites = { "tech_rse_secret_project" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = {
+		pop_rse_home_service_bonus_workforce_mult = @rse_maid_service_job_efficiency
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_service_job_efficiency
+		custom_tooltip = tech_rse_maid_service_effect
+	}
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 7 }
+}
+
+tech_rse_hypnosis = {
+	cost = @tier4cost2
+	area = society
+	category = { biology psionics }
+	tier = 4
+	is_rare = yes
+	is_dangerous = yes
+	weight = @tier4weight2
+	icon = tech_psionic_theory
+	prerequisites = { "tech_rse_maid_service" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_hypnosis_effect }
+	weight_modifier = { factor = 3 }
+	ai_weight = { factor = 6 }
+}
+
+tech_rse_desire_analysis = {
+	cost = @tier5cost1
+	area = society
+	category = { biology psionics }
+	tier = 5
+	is_rare = yes
+	is_dangerous = yes
+	weight = @tier5weight1
+	icon = tech_thought_enforcement
+	prerequisites = { "tech_rse_hypnosis" }
+	potential = { rse_has_exclusive_route = yes }
+	modifier = { custom_tooltip = tech_rse_desire_analysis_effect }
+	weight_modifier = { factor = 4 }
+	ai_weight = { factor = 8 }
+}
+
+tech_rse_mind_control = {
+	cost = @tier5cost2
+	area = society
+	category = { biology psionics }
+	tier = 5
+	is_rare = yes
+	is_dangerous = yes
+	is_reverse_engineerable = no
+	weight = 0
+	icon = tech_thought_enforcement
+	prerequisites = { "tech_rse_secret_project" }
+	potential = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_great_species_completed
+	}
+	modifier = { custom_tooltip = tech_rse_mind_control_effect }
+	ai_weight = { factor = 10 }
+}

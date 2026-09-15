@@ -1,0 +1,531 @@
+# Intentional vanilla-key override: keeps the original Bio-Trophy job and adds
+# route-gated scaling jobs/effects without replacing the whole jobs directory.
+bio_trophy = {
+	category = bio_trophy
+	can_be_automated = no
+	swappable_data = {
+		default = { building_icon = building_organic_sanctuary }
+	}
+	tags = { unity }
+	possible_pre_triggers = {
+		is_sapient = yes
+		is_robotic = no
+	}
+	possible = {
+		has_citizenship_type = { type = citizenship_organic_trophy country = owner }
+		OR = {
+			is_pop_category = bio_trophy
+			is_pop_category = bio_trophy_unemployment
+		}
+		colony? = { NOT = { is_planet_class = pc_cosmogenesis_world } }
+		owner? = { is_hospitality_servitor_empire = no }
+		if = {
+			limit = { owner? = { has_country_flag = rse_route_exclusive_service } }
+			has_trait = trait_rse_protected_founder
+			rse_bio_trophy_effects_active = yes
+		}
+	}
+	resources = {
+		category = planet_bio_trophies
+		# "Exhaust Them" keeps the existing job slots for save compatibility but
+		# suppresses all output unless the local growth monitor is enabled.
+		produces = {
+			trigger = { rse_bio_trophy_effects_active = yes }
+			unity = 1
+		}
+		produces = {
+			trigger = {
+				owner? = { has_technology = tech_rse_service_specialization }
+				rse_bio_trophy_effects_active = yes
+			}
+			unity = 1
+		}
+		produces = {
+			trigger = {
+				owner? = { has_technology = tech_rse_personal_records }
+				rse_bio_trophy_effects_active = yes
+			}
+			unity = 1
+			society_research = 0.5
+		}
+		produces = {
+			trigger = {
+				owner? = { has_technology = tech_rse_personal_records }
+				rse_bio_trophy_effects_active = yes
+			}
+			physics_research = @rse_bio_trophy_science
+			society_research = @rse_bio_trophy_science
+			engineering_research = @rse_bio_trophy_science
+		}
+		produces = {
+			trigger = {
+				colony? = { has_modifier = rse_white_leader_common_sense }
+				rse_bio_trophy_effects_active = yes
+			}
+			food = 1
+		}
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = {
+				OR = {
+					NOT = { has_technology = tech_rse_drone_rotation }
+					has_policy_flag = rse_activity_scope_urban
+				}
+			}
+		}
+		pop_cat_complex_drone_bonus_workforce_mult = 0.01
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = {
+				has_technology = tech_rse_service_specialization
+			}
+		}
+		planet_stability_add = @rse_bio_trophy_stability
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = { has_policy_flag = rse_activity_scope_urban }
+		}
+		pop_cat_complex_drone_bonus_workforce_mult = @rse_rotation_category_minor
+		worker_and_simple_drone_cat_bonus_workforce_mult = @rse_rotation_category_minor
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = { has_policy_flag = rse_activity_scope_unrestricted }
+		}
+		pop_cat_complex_drone_bonus_workforce_mult = @rse_rotation_category_balanced
+		worker_and_simple_drone_cat_bonus_workforce_mult = @rse_rotation_category_balanced
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = { has_policy_flag = rse_activity_scope_rural }
+		}
+		pop_cat_complex_drone_bonus_workforce_mult = @rse_rotation_category_minor
+		worker_and_simple_drone_cat_bonus_workforce_mult = @rse_rotation_category_major
+		planet_orbital_bombardment_damage = @rse_rotation_rural_bombardment
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = { has_technology = tech_rse_service_specialization }
+		}
+		# Tuned after in-game pop-group testing: ten service jobs per Bio-Trophy
+		# job unit keeps the supporting workforce strong without overwhelming
+		# every other complex-drone job.
+		job_rse_home_service_add = 10
+	}
+	triggered_planet_modifier = {
+		potential = {
+			rse_bio_trophy_effects_active = yes
+			owner? = { has_technology = tech_rse_personal_records }
+		}
+		job_rse_activity_recorder_add = 10
+	}
+	weight = { weight = @special_job_weight }
+	inline_script = "jobs/automodding_priority_charisma"
+}
+
+# Dedicated replacement used only by the unmonitored "Exhaust Them" plan.
+# It is uncapped like vanilla organic_exhibit: eligibility is mutually
+# exclusive with bio_trophy, so pop groups move without changing citizenship,
+# population upkeep or the capacity definitions supplied by other content.
+rse_exhausted_bio_trophy = {
+	category = bio_trophy
+	can_be_automated = no
+	can_set_priority = no
+	is_capped_by_modifier = no
+	swappable_data = {
+		default = {
+			building_icon = building_organic_sanctuary
+			icon = bio_trophy
+		}
+	}
+	possible_pre_triggers = {
+		is_sapient = yes
+		is_robotic = no
+	}
+	possible = {
+		has_citizenship_type = { type = citizenship_organic_trophy country = owner }
+		OR = {
+			is_pop_category = bio_trophy
+			is_pop_category = bio_trophy_unemployment
+		}
+		colony? = {
+			NOT = { is_planet_class = pc_cosmogenesis_world }
+			NOT = { has_carrier_flag = rse_growth_monitor_enabled }
+		}
+		owner? = {
+			has_country_flag = rse_route_exclusive_service
+			has_policy_flag = rse_growth_exhaust
+			is_hospitality_servitor_empire = no
+		}
+		has_trait = trait_rse_protected_founder
+	}
+	resources = { category = planet_rse_exhausted_bio_trophies }
+	weight = { weight = @special_job_weight }
+}
+
+rse_home_service = {
+	category = rse_servitor
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_organic_sanctuary
+			icon = maintenance_drone
+		}
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	tags = { amenities pop_assembly }
+	planet_modifier = {
+		planet_crime_no_happiness_add = @rse_home_service_deviation
+		planet_pop_assembly_add = @rse_home_service_assembly
+		# Stellaris 4.4 represents Clone Vat organic assembly as pop-group
+		# growth. The fake modifier exposes that value in the planet UI.
+		fake_pop_growth_mod = @rse_home_service_assembly
+	}
+	triggered_planet_pop_group_modifier_for_all = {
+		bonus_pop_growth = @rse_home_service_assembly
+	}
+	# Apply the tradition to the two assembly channels only. This is the last
+	# known-good 4.4 path and deliberately restores normal job-efficiency scaling.
+	triggered_planet_modifier = {
+		potential = { owner? = { has_tradition = tr_rse_individual_needs_model } }
+		planet_pop_assembly_add = @rse_home_service_tradition_assembly
+		fake_pop_growth_mod = @rse_home_service_tradition_assembly
+	}
+	triggered_planet_pop_group_modifier_for_all = {
+		potential = { owner? = { has_tradition = tr_rse_individual_needs_model } }
+		bonus_pop_growth = @rse_home_service_tradition_assembly
+	}
+	# Twice the normal complex-drone priority so newly opened service slots are
+	# populated automatically instead of remaining behind generic drone jobs.
+	weight = { weight = @rse_servitor_job_weight }
+}
+
+rse_activity_recorder = {
+	category = rse_servitor
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_machine_capital
+			icon = brain_drone
+		}
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	tags = { research }
+	resources = {
+		# A dedicated resource category keeps this as visible, normal Society
+		# research without letting planet_researchers_produces_mult feed back into
+		# the Activity Recorders that generated that modifier.
+		category = planet_rse_activity_recorders
+		produces = { society_research = @rse_activity_recorder_society }
+		produces = {
+			trigger = { owner? = { has_tradition = tr_rse_permanent_activity_records } }
+			society_research = @rse_activity_recorder_tradition_society
+		}
+	}
+	planet_modifier = {
+		# Generic researcher efficiency works for Rogue Servitors; the hive-only
+		# brain-drone modifier does not.
+		planet_researchers_produces_mult = @rse_activity_recorder_research_efficiency
+		species_empire_size_mult = @rse_activity_recorder_empire_size
+	}
+	triggered_planet_modifier = {
+		potential = { owner? = { has_tradition = tr_rse_permanent_activity_records } }
+		species_empire_size_mult = @rse_activity_recorder_tradition_empire_size
+	}
+	weight = { weight = @rse_servitor_job_weight }
+}
+
+rse_mechanical_maid = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_organic_sanctuary
+			icon = artisan_drone
+		}
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	tags = {
+		consumer_goods alloys strategic_resource unity
+		volatile_motes exotic_gases rare_crystals sr_living_metal
+	}
+	resources = {
+		category = planet_rse_mechanical_maids
+		upkeep = {
+			minerals = @rse_maid_minerals_upkeep
+			food = @rse_maid_food_upkeep
+		}
+		# The production policy converts the same base output between consumer
+		# goods and alloys at a one-to-one ratio. The first block is also the
+		# fallback for old saves before a policy option has been initialized.
+		produces = {
+			trigger = {
+				owner? = {
+					NOR = {
+						has_policy_flag = rse_maid_production_10
+						has_policy_flag = rse_maid_production_25
+						has_policy_flag = rse_maid_production_50
+						has_policy_flag = rse_maid_production_75
+						has_policy_flag = rse_maid_production_90
+						has_policy_flag = rse_maid_production_100
+					}
+				}
+			}
+			consumer_goods = @rse_maid_consumer_goods
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_10 } }
+			consumer_goods = 13.50
+			alloys = 1.50
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_25 } }
+			consumer_goods = 11.25
+			alloys = 3.75
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_50 } }
+			consumer_goods = 7.50
+			alloys = 7.50
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_75 } }
+			consumer_goods = 3.75
+			alloys = 11.25
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_90 } }
+			consumer_goods = 1.50
+			alloys = 13.50
+		}
+		produces = {
+			trigger = { owner? = { has_policy_flag = rse_maid_production_100 } }
+			alloys = @rse_maid_consumer_goods
+		}
+
+		# Direct adjustment from the preceding live values: each unlocked refinery
+		# line uses 10% of 25 minerals (2.5) and produces 25% of 2 resources (0.5).
+		# A planet decision can suspend every refinery block without disabling
+		# the maid's normal consumer-goods/alloy production.
+		upkeep = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_volatile_motes }
+			}
+			minerals = @rse_maid_refinery_minerals_upkeep
+		}
+		produces = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_volatile_motes }
+			}
+			volatile_motes = @rse_maid_refinery_output
+		}
+		upkeep = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_exotic_gases }
+			}
+			minerals = @rse_maid_refinery_minerals_upkeep
+		}
+		produces = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_exotic_gases }
+			}
+			exotic_gases = @rse_maid_refinery_output
+		}
+		upkeep = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_rare_crystals }
+			}
+			minerals = @rse_maid_refinery_minerals_upkeep
+		}
+		produces = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_technology = tech_rare_crystals }
+			}
+			rare_crystals = @rse_maid_refinery_output
+		}
+		upkeep = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				# Enhanced Bio-Trophies proves sr_living_metal job production works
+				# reliably when gated by a machine ascension perk. Use this mod's own
+				# Master Maid ascension instead of the anomaly-gated mining technology.
+				owner? = { has_ascension_perk = ap_rse_master_maid }
+			}
+			minerals = @rse_maid_refinery_minerals_upkeep
+		}
+		produces = {
+			trigger = {
+				colony? = { NOT = { has_carrier_flag = rse_maid_refining_disabled } }
+				owner? = { has_ascension_perk = ap_rse_master_maid }
+			}
+			sr_living_metal = @rse_maid_refinery_output
+		}
+		produces = {
+			trigger = { colony? = { has_building = building_rse_maid_center } }
+			unity = @rse_maid_center_unity
+		}
+		produces = {
+			trigger = { colony? = { has_building = building_rse_maid_workshop_coordination } }
+			trade = 1
+		}
+	}
+	planet_modifier = { planet_amenities_add = @rse_maid_amenities }
+	weight = { weight = @rse_service_job_weight }
+}
+
+rse_domestic_maid = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_paradise_dome
+			icon = maintenance_drone
+		}
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	tags = { amenities }
+	planet_modifier = {
+		robotic_pop_bonus_workforce_mult = @rse_domestic_maid_robotic_efficiency
+		planet_stability_add = @rse_domestic_maid_stability
+	}
+	weight = { weight = @rse_service_job_weight }
+}
+
+rse_visit_planner = {
+	category = complex_drone
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_organic_sanctuary
+			icon = coordinator
+		}
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	tags = { amenities }
+	planet_modifier = {
+		worker_and_simple_drone_cat_bonus_workforce_mult = @rse_visit_planner_simple_efficiency
+		pop_housing_usage_mult = @rse_visit_planner_housing_usage
+	}
+	weight = { weight = @rse_service_job_weight }
+}
+
+rse_processing_specialist = {
+	category = rse_servitor
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_clone_vats
+			icon = fabricator
+		}
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	tags = { pop_growth }
+	planet_modifier = {
+		# Per-job planet modifiers are multiplied by the assigned workforce.
+		# The pop-group block used in prototype.3 was not evaluated for this job.
+		bonus_pop_growth_mult = @rse_processing_specialist_growth
+	}
+	weight = { weight = @rse_servitor_job_weight }
+}
+
+rse_material_synthesizer = {
+	category = rse_servitor
+	swappable_data = {
+		default = {
+			condition_string = DRONE_JOB_TRIGGER
+			building_icon = building_machine_assembly_plant
+			icon = replicator
+		}
+	}
+	possible_precalc = can_fill_drone_job
+	possible = {
+		can_think = yes
+		owner? = { has_country_flag = rse_route_exclusive_service }
+	}
+	possible_pre_triggers = {
+		has_owner = yes
+		is_enslaved = no
+		is_being_purged = no
+		is_being_assimilated = no
+		is_sapient = yes
+	}
+	tags = { pop_assembly }
+	triggered_planet_modifier = {
+		planet_pop_assembly_mult = @rse_material_synthesizer_assembly
+	}
+	weight = { weight = @rse_servitor_job_weight }
+}

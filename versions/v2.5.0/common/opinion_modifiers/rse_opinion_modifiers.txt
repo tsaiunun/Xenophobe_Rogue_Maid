@@ -1,0 +1,5 @@
+rse_opinion_universal_shelter = {
+	opinion = 50
+	decay = 0
+}
+

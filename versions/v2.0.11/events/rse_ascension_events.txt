@@ -1,0 +1,22 @@
+namespace = rse_ascension
+
+country_event = {
+	id = rse_ascension.1
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		# Keep this event as a repair hook for old saves and console testing. The
+		# perk now applies the same effect directly when selected.
+		owner_main_species = {
+			every_galaxy_species = {
+				limit = {
+					is_same_species = prev
+					NOT = { has_trait = trait_rse_master_maid }
+				}
+				change_species_characteristics = {
+					add_trait = trait_rse_master_maid
+				}
+			}
+		}
+	}
+}
