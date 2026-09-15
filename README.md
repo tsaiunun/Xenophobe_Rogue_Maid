@@ -10,7 +10,7 @@ This is an unofficial Stellaris mod.
 Stellaris and original game assets © Paradox Interactive AB.
 This mod is not affiliated with or endorsed by Paradox Interactive.
 
-覆蓋並重寫了活體陳設與權力邏輯，現在除了創始陳設的外星人你可以給予其一般公民權與不可接觸者。奴隸與更多生活標準在計畫中。
+覆蓋並重寫了活體陳設與權力邏輯，現在除了創始陳設的外星人你可以給予其一般公民權、奴隸與不可接觸者。更多生活標準與處理正在計畫中(應該會做八)。
 ex.不是萌化模組的外星人.直接滅絕
 
 快使用機樸大運輾過外星人吧。(平衡是什麼，能吃嗎?) 
@@ -44,6 +44,7 @@ ps.獨特的星球改造選項會將所有區劃歸類為城市區劃
 後續計畫內容 : 更多科技與、獨特附庸國與宗主建築、其他。
 暫不考慮測試 : AI帝國失控機樸等
 
+程式由神秘的chatgpt小姐產生，我只負責提出想法、科技、傳統、事件等。什麼時候AI能變成失控機樸包養我owo。
 ## 版本目录
 
 - `versions/v1.0/`：初代正式版，模组版本 1.0。
