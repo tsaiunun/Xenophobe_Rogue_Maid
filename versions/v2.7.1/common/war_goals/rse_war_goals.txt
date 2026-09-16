@@ -1,0 +1,56 @@
+wg_rse_polluted_database = {
+	casus_belli = cb_rse_polluted_database
+	release_occupied_systems_on_status_quo = yes
+	show_agreement_terms = no
+	surrender_acceptance = -100
+	war_exhaustion = 0.75
+
+	potential = {
+		rse_has_exclusive_route = yes
+		has_ascension_perk = ap_rse_master_maid
+		has_total_war_cb = no
+	}
+
+	possible = {
+		from = {
+			is_country_type = default
+			is_subject = no
+			is_gestalt = no
+			owner_main_species = {
+				is_robotic = no
+				NOT = { has_trait = trait_rse_protected_founder }
+			}
+		}
+	}
+
+	on_accept = {
+		save_event_target_as = rse_pollution_overlord
+		owner_main_species = { save_event_target_as = rse_pollution_machine_species }
+		random_owned_species = {
+			limit = { has_trait = trait_rse_protected_founder }
+			save_event_target_as = rse_pollution_protected_organic
+		}
+		from = { rse_convert_to_supervisory_zone = yes }
+	}
+
+	on_status_quo = {
+		if = {
+			limit = {
+				exists = last_created_country
+				last_created_country = { has_country_flag = released_empire }
+			}
+			save_event_target_as = rse_pollution_overlord
+			owner_main_species = { save_event_target_as = rse_pollution_machine_species }
+			random_owned_species = {
+				limit = { has_trait = trait_rse_protected_founder }
+				save_event_target_as = rse_pollution_protected_organic
+			}
+			last_created_country = {
+				set_origin_effect = { SOURCE_COUNTRY = from }
+				rse_convert_to_supervisory_zone = yes
+			}
+		}
+	}
+
+	ai_weight = { weight = 20 }
+}

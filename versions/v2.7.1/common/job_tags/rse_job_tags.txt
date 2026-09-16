@@ -1,0 +1,8 @@
+# Custom job tags must be registered before they can be referenced by jobs or
+# total_workforce_with_job_tag. Resource-specific tags are used only for the
+# Mechanical Maid tooltip/category routing; rse_home_service drives the capped
+# monthly assembly controller.
+rse_home_service
+nanites
+sr_zro
+sr_dark_matter

@@ -1,0 +1,224 @@
+# Ideal Paradise uses the machine_world district set, whose slot_nexus does not
+# include the vanilla's food zone set. This dedicated nexus version preserves
+# the intended Machine World job scaling without exposing food zones to every
+# ordinary Machine World.
+zone_rse_food_nexus = {
+	icon = GFX_district_specialization_food
+	base_buildtime = @zone_buildtime
+
+	potential = {
+		is_planet_class = pc_rse_ideal_paradise
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+	}
+
+	unlock = {
+		is_planet_class = pc_rse_ideal_paradise
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+	}
+
+	resources = {
+		category = planet_zones
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
+		}
+	}
+
+	inline_script = {
+		script = jobs/zone_farmers_add
+		AMOUNT = @doubled_scaling_district_1_job
+	}
+
+	swap_type = district_rse_nexus_food
+	swap_type_weight = 5
+
+	zone_sets = {
+		nexus
+	}
+
+	included_building_sets = {
+		farming
+		hydroponics
+		farming_automation
+		fallen_empire_farming
+	}
+
+	planet_modifier = {
+		zone_building_slots_add = 3
+	}
+
+	inline_script = {
+		script = zones/shared_arcology_zone_modifiers
+	}
+
+	ai_priority = 5
+	show_in_tech = tech_food_processing_1
+}
+
+# Maid Workshop industrial specialization ---------------------------------
+# The main urban version receives the vanilla planet-class multiplier through
+# zone_rse_mechanical_maids_add.  The three secondary-district variants pass a
+# doubled base amount, so their final capacity is exactly twice the matching
+# main-district value (normal 100; Machine/Ideal 300 -> secondary 600).
+
+zone_rse_maid_industry = {
+	icon = GFX_district_specialization_factory
+	base_buildtime = @zone_buildtime
+
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+
+	unlock = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+
+	resources = {
+		category = planet_zones
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
+		}
+	}
+
+	zone_sets = { urban habitat_urban }
+	included_building_sets = { industrial factory urban_automation origin }
+
+	inline_script = {
+		script = jobs/zone_rse_mechanical_maids_add
+		AMOUNT = @scaling_district_1_job
+	}
+
+	planet_modifier = { zone_building_slots_add = 3 }
+	inline_script = { script = zones/shared_city_non_urban_zone_modifiers }
+
+	ai_resource_production = { consumer_goods = 20 alloys = 20 }
+	ai_priority = 12
+	ai_weight_coefficient = 1.3
+}
+
+zone_rse_maid_industry_arcology = {
+	icon = GFX_district_specialization_factory
+	base_buildtime = @zone_buildtime
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	unlock = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	resources = {
+		category = planet_zones
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
+		}
+	}
+	zone_sets = { arcology }
+	included_building_sets = { industrial factory urban_automation origin }
+	inline_script = {
+		script = jobs/zone_rse_mechanical_maids_add
+		AMOUNT = @doubled_scaling_district_1_job
+	}
+	swap_type = district_rse_arcology_maid_industry
+	swap_type_weight = 8
+	planet_modifier = { zone_building_slots_add = 3 }
+	inline_script = { script = zones/shared_arcology_zone_modifiers }
+	ai_resource_production = { consumer_goods = 40 alloys = 40 }
+	ai_priority = 12
+	ai_weight_coefficient = 1.3
+}
+
+zone_rse_maid_industry_nexus = {
+	icon = GFX_district_specialization_factory
+	base_buildtime = @zone_buildtime
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	unlock = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	resources = {
+		category = planet_zones
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
+		}
+	}
+	zone_sets = { nexus }
+	included_building_sets = { industrial factory urban_automation origin }
+	inline_script = {
+		script = jobs/zone_rse_mechanical_maids_add
+		AMOUNT = @doubled_scaling_district_1_job
+	}
+	swap_type = district_rse_nexus_maid_industry
+	swap_type_weight = 8
+	planet_modifier = { zone_building_slots_add = 3 }
+	inline_script = { script = zones/shared_arcology_zone_modifiers }
+	ai_resource_production = { consumer_goods = 40 alloys = 40 }
+	ai_priority = 12
+	ai_weight_coefficient = 1.3
+}
+
+zone_rse_maid_industry_ring_world = {
+	icon = GFX_district_specialization_factory
+	base_buildtime = @zone_buildtime
+	potential = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	unlock = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		has_active_building = building_rse_maid_workshop_coordination
+	}
+	resources = {
+		category = planet_zones
+		inline_script = {
+			script = buildings/nomadic_cost_switcher
+			REGULAR_RESOURCE = minerals
+			NOMADIC_RESOURCE = alloys
+			COST = @zone_cost
+			NOMADIC_COST_MULT = 0.5
+		}
+	}
+	zone_sets = { ring_world }
+	included_building_sets = { industrial factory urban_automation origin }
+	inline_script = {
+		script = jobs/zone_rse_mechanical_maids_add
+		AMOUNT = @doubled_scaling_district_1_job
+	}
+	swap_type = district_rse_ring_world_maid_industry
+	swap_type_weight = 8
+	planet_modifier = { zone_building_slots_add = 3 }
+	inline_script = { script = zones/shared_ring_world_zone_modifiers }
+	ai_resource_production = { consumer_goods = 60 alloys = 60 }
+	ai_priority = 12
+	ai_weight_coefficient = 1.3
+}

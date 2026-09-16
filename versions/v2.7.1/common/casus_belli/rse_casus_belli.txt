@@ -1,0 +1,24 @@
+cb_rse_polluted_database = {
+	show_in_diplomacy = yes
+	show_notification = yes
+	potential = {
+		is_country_type = default
+		rse_has_exclusive_route = yes
+		has_ascension_perk = ap_rse_master_maid
+		is_subject = no
+		NOT = { is_in_federation_with = from }
+	}
+	is_valid = {
+		from = {
+			is_country_type = default
+			is_subject = no
+			is_gestalt = no
+			owner_main_species = {
+				is_robotic = no
+				NOT = { has_trait = trait_rse_protected_founder }
+			}
+		}
+		# Deliberately no relative-power check: this is the requested unrestricted
+		# derivative of vanilla subjugation.
+	}
+}

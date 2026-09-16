@@ -1,0 +1,57 @@
+# Population totals are evaluated in planet scope. Each cap multiplier equals
+# min(1, cap / matching population), so the direct per-pop trait modifier grows
+# linearly until the documented maximum and then remains constant.
+
+rse_organic_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_organic_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_organic_simulator_cap_multiplier = {
+	base = @rse_organic_simulator_pop_cap
+	divide = value:rse_organic_simulator_pop_amount
+	max = 1
+}
+
+rse_intelligence_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_intelligence_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_intelligence_simulator_cap_multiplier = {
+	base = @rse_intelligence_simulator_pop_cap
+	divide = value:rse_intelligence_simulator_pop_amount
+	max = 1
+}
+
+rse_desire_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_desire_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_desire_simulator_cap_multiplier = {
+	base = @rse_desire_simulator_pop_cap
+	divide = value:rse_desire_simulator_pop_amount
+	max = 1
+}
+
+# Snapshot-based Hunter-Seeker conversion.  Job quantities use 100 script
+# units per one displayed job, so the stored raw capacity is divided by 100
+# before the building's triggered modifier is scaled.
+rse_patrol_drone_conversion_units = {
+	base = this.rse_patrol_drone_slots_snapshot
+	divide = 100
+	min = 0
+}

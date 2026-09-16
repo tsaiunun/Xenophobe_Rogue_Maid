@@ -1,0 +1,59 @@
+on_game_start_country = {
+	events = { rse_route.0 }
+}
+
+on_post_communications_established = {
+	events = { rse_route.1 }
+}
+
+on_monthly_pulse_country = {
+	events = {
+		rse_maintenance.1
+		rse_v2.1
+		rse_proto.100
+	}
+}
+
+# Both death on_actions use THIS = owning country and FROM = dying leader.
+# A death fires one of the two paths depending on whether it has a notification.
+on_leader_death_notify = {
+	events = { rse_proto.20 }
+}
+
+on_leader_death_no_notify = {
+	events = { rse_proto.20 }
+}
+
+on_tech_increased = {
+	events = { rse_v2.2 }
+}
+
+on_ground_combat_started = {
+	events = { rse_defense.1 }
+}
+
+on_planet_occupied = {
+	events = { rse_maintenance.3 }
+}
+
+on_planet_returned = {
+	events = { rse_maintenance.3 }
+}
+
+on_colony_transfer = {
+	events = { rse_maintenance.4 }
+}
+
+# Rebuild the Hunter-Seeker -> Home Service capacity snapshot whenever common
+# job-capacity sources change.  The event is harmless on colonies without a
+# Maid Base or Maid Center.
+on_building_complete = { events = { rse_conversion.1 } }
+on_building_upgraded = { events = { rse_conversion.1 } }
+on_building_demolished = { events = { rse_conversion.1 } }
+on_building_replaced = { events = { rse_conversion.1 } }
+on_building_downgraded = { events = { rse_conversion.1 } }
+on_building_repaired = { events = { rse_conversion.1 } }
+on_building_ruined = { events = { rse_conversion.1 } }
+on_district_complete = { events = { rse_conversion.1 } }
+on_district_demolished = { events = { rse_conversion.1 } }
+on_zone_complete = { events = { rse_conversion.1 } }

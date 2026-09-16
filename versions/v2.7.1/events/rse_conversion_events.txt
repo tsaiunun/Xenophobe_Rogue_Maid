@@ -1,0 +1,135 @@
+namespace = rse_conversion
+
+# Exact rescan request after a source building/district changes.
+colony_event = {
+	id = rse_conversion.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+			remove_carrier_flag = rse_patrol_drone_conversion_active
+			set_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+			colony_event = { id = rse_conversion.2 days = 1 }
+		}
+		else = {
+			remove_carrier_flag = rse_patrol_drone_conversion_active
+			remove_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+			clear_variable = rse_patrol_drone_slots_snapshot
+		}
+	}
+}
+
+# With the conversion flag temporarily absent, both filled and vacant
+# Hunter-Seeker jobs expose the colony's real total capacity.
+colony_event = {
+	id = rse_conversion.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		remove_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+		clear_variable = rse_patrol_drone_slots_snapshot
+		if = {
+			limit = {
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+			set_variable = { which = rse_patrol_drone_slots_snapshot value = 0 }
+			export_trigger_value_to_variable = {
+				trigger = num_assigned_jobs
+				parameters = { job = patrol_drone }
+				variable = rse_patrol_drone_slots_snapshot
+			}
+			set_variable = { which = rse_patrol_drone_free_slots value = 0 }
+			export_trigger_value_to_variable = {
+				trigger = free_jobs_of_type
+				parameters = { job = patrol_drone }
+				variable = rse_patrol_drone_free_slots
+			}
+			change_variable = {
+				which = rse_patrol_drone_slots_snapshot
+				value = rse_patrol_drone_free_slots
+			}
+			clear_variable = rse_patrol_drone_free_slots
+			set_carrier_flag = rse_patrol_drone_conversion_active
+		}
+	}
+}
+
+# Monthly maintenance initializes old saves and absorbs newly-added capacity
+# without waiting for a specific construction on_action.
+colony_event = {
+	id = rse_conversion.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+				NOR = {
+					has_carrier_flag = rse_patrol_drone_conversion_active
+					has_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+				}
+			}
+			colony_event = { id = rse_conversion.1 }
+		}
+		else_if = {
+			limit = {
+				has_carrier_flag = rse_patrol_drone_conversion_active
+				OR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+			set_variable = { which = rse_patrol_drone_remaining_slots value = 0 }
+			export_trigger_value_to_variable = {
+				trigger = num_assigned_jobs
+				parameters = { job = patrol_drone }
+				variable = rse_patrol_drone_remaining_slots
+			}
+			set_variable = { which = rse_patrol_drone_remaining_free value = 0 }
+			export_trigger_value_to_variable = {
+				trigger = free_jobs_of_type
+				parameters = { job = patrol_drone }
+				variable = rse_patrol_drone_remaining_free
+			}
+			change_variable = {
+				which = rse_patrol_drone_remaining_slots
+				value = rse_patrol_drone_remaining_free
+			}
+			if = {
+				limit = { check_variable = { which = rse_patrol_drone_remaining_slots value > 0 } }
+				change_variable = {
+					which = rse_patrol_drone_slots_snapshot
+					value = rse_patrol_drone_remaining_slots
+				}
+			}
+			clear_variable = rse_patrol_drone_remaining_slots
+			clear_variable = rse_patrol_drone_remaining_free
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					has_active_building = building_rse_maid_base
+					has_active_building = building_rse_maid_center
+				}
+			}
+			remove_carrier_flag = rse_patrol_drone_conversion_active
+			remove_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+			clear_variable = rse_patrol_drone_slots_snapshot
+		}
+	}
+}

@@ -1,0 +1,68 @@
+# Country-scope conversion applied to the defeated empire or the vanilla
+# released_empire created by a status-quo subjugation peace.
+rse_convert_to_supervisory_zone = {
+	copy_ethos_and_authority = event_target:rse_pollution_overlord
+	force_add_civic = civic_machine_servitor
+	change_dominant_species = {
+		species = event_target:rse_pollution_machine_species
+		change_all = no
+	}
+	set_country_flag = rse_supervisory_zone_created_by_war
+	set_country_flag = rse_route_chosen
+	set_country_flag = rse_route_exclusive_service
+	set_subject_of = {
+		who = event_target:rse_pollution_overlord
+		preset = preset_rse_supervisory_zone
+	}
+	add_modifier = { modifier = rse_supervisory_zone_initial_loyalty days = -1 }
+	add_modifier = { modifier = rse_database_cleaning years = 10 }
+
+	every_owned_planet = {
+		# Pop-group sizes use 100 script units per displayed Pop.
+		create_pop_group = {
+			species = event_target:rse_pollution_machine_species
+			size = 200
+		}
+	}
+
+	every_owned_species = {
+		if = {
+			limit = {
+				exists = event_target:rse_pollution_protected_organic
+				is_same_species = event_target:rse_pollution_protected_organic
+			}
+			set_citizenship_type = {
+				type = citizenship_organic_trophy
+				country = prev
+				cooldown = no
+			}
+			set_living_standard = {
+				type = living_standard_organic_trophy
+				country = prev
+			}
+		}
+		else_if = {
+			limit = {
+				is_robotic_species = yes
+				NOT = { is_same_species = event_target:rse_pollution_machine_species }
+			}
+			set_citizenship_type = {
+				type = citizenship_assimilation
+				country = prev
+				cooldown = no
+			}
+		}
+		else_if = {
+			limit = { is_robotic_species = no }
+			set_citizenship_type = {
+				type = citizenship_purge
+				country = prev
+				cooldown = no
+			}
+			set_purge_type = {
+				type = purge_normal
+				country = prev
+			}
+		}
+	}
+}

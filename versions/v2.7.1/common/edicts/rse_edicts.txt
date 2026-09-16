@@ -1,0 +1,85 @@
+rse_maid_production_reorganization_act = {
+	# One-day duration makes this a one-shot act. A timed country flag controls
+	# its independent 360-day reuse cooldown after the immediate effect fires.
+	length = 1
+	icon = "GFX_edict_type_policy"
+
+	resources = {
+		category = edicts
+		cost = { unity = 100 }
+	}
+
+	potential = {
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_mechanical_maids
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_maid_reorganization_act_cooldown
+			NOT = { has_country_flag = rse_maid_reorganization_act_cooldown }
+		}
+	}
+
+	effect = {
+		custom_tooltip = rse_maid_reorganization_act_effect
+		hidden_effect = {
+			country_event = { id = rse_v2.10 }
+		}
+	}
+
+	modifier = {}
+
+	ai_weight = {
+		weight = 5
+		modifier = {
+			factor = 3
+			OR = {
+				has_deficit = consumer_goods
+				has_deficit = alloys
+			}
+		}
+	}
+}
+
+rse_growth_plan_reorganization_act = {
+	length = 1
+	icon = "GFX_edict_type_policy"
+	resources = { category = edicts cost = { unity = 100 } }
+	potential = {
+		rse_has_exclusive_route = yes
+		has_technology = tech_rse_desire_analysis
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_growth_reorganization_act_cooldown
+			NOT = { has_country_flag = rse_growth_reorganization_act_cooldown }
+		}
+	}
+	effect = {
+		custom_tooltip = rse_growth_reorganization_act_effect
+		hidden_effect = { country_event = { id = rse_v2.60 } }
+	}
+	modifier = {}
+	ai_weight = { weight = 5 }
+}
+
+rse_recruit_trophy_leader = {
+	length = 1
+	icon = "GFX_edict_type_policy"
+	resources = { category = edicts cost = { unity = 100 } }
+	potential = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_trophy_leader_recruitment_unlocked
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_recruit_trophy_leader_cooldown
+			NOT = { has_country_flag = rse_recruit_trophy_leader_cooldown }
+		}
+		any_owned_species = { has_trait = trait_rse_protected_founder }
+	}
+	effect = { country_event = { id = rse_v2.50 } }
+	modifier = {}
+	ai_weight = { weight = 10 }
+}

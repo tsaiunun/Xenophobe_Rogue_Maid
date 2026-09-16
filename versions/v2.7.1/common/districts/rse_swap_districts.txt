@@ -1,0 +1,50 @@
+# Hidden swap district used by the Ideal Paradise food-focused nexus zone.
+# It mirrors the vanilla ring-world food swap district while remaining tied to
+# this mod's zone key for save compatibility.
+district_rse_nexus_food = {
+	icon = district_farming
+	overlay_icon = GFX_district_food
+
+	zone_slots = {
+		slot_empty
+	}
+
+	show_on_uncolonized = {
+		always = no
+	}
+
+	potential = {
+		always = no
+	}
+
+	inline_script = {
+		script = districts/district_triggered_name_farming
+	}
+}
+
+# Hidden swap districts used by the high-capacity Maid Industrial Zone.
+district_rse_arcology_maid_industry = {
+	overlay_icon = GFX_district_consumer_goods
+	zone_slots = { slot_empty }
+	show_on_uncolonized = { always = no }
+	potential = { always = no }
+	triggered_name = { text = district_rse_maid_industry }
+}
+
+district_rse_nexus_maid_industry = {
+	icon = district_arcology_civilian_industry
+	overlay_icon = GFX_district_consumer_goods
+	zone_slots = { slot_empty }
+	show_on_uncolonized = { always = no }
+	potential = { always = no }
+	triggered_name = { text = district_rse_maid_industry }
+}
+
+district_rse_ring_world_maid_industry = {
+	icon = district_arcology_civilian_industry
+	overlay_icon = GFX_district_consumer_goods
+	zone_slots = { slot_empty }
+	show_on_uncolonized = { always = no }
+	potential = { always = no }
+	triggered_name = { text = district_rse_maid_industry }
+}
