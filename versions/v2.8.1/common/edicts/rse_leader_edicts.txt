@@ -1,0 +1,46 @@
+# The one-day edict opens the picker; only confirming a leader starts cooldown.
+rse_surrounded_selection = {
+	length = 1
+	icon = "GFX_edict_type_policy"
+	potential = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_surrounded_traits_unlocked
+	}
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_picker.already_open
+			NOT = { has_country_flag = rse_picker_open }
+		}
+		custom_tooltip = {
+			fail_text = rse_surrounded_selection_cooldown
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+		}
+		custom_tooltip = {
+			fail_text = rse_surrounded_selection_available
+			any_owned_leader = { rse_surrounded_eligible_leader = yes }
+		}
+	}
+	effect = { hidden_effect = { country_event = { id = rse_picker.1 } } }
+	modifier = {}
+	ai_weight = { weight = 0 }
+}
+
+rse_portable_space_utilization = {
+	length = -1
+	icon = "GFX_edict_type_policy"
+	resources = {
+		category = edicts
+		upkeep = { energy = 10 food = 10 }
+	}
+	potential = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_portable_space_unlocked
+	}
+	modifier = {
+		planet_pops_robotics_upkeep_mult = -0.15
+		robotic_pop_bonus_workforce_mult = 0.05
+		pop_category_bio_trophy_food_upkeep_add = 0.30
+		pop_category_bio_trophy_consumer_goods_upkeep_add = 0.30
+	}
+	ai_weight = { weight = 20 }
+}

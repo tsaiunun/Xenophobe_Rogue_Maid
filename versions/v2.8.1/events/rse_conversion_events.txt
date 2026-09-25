@@ -1,0 +1,86 @@
+namespace = rse_conversion
+
+# Do not infer capacity from employed population: 4.x workforce efficiency
+# makes num_assigned_jobs + free_jobs_of_type an invalid capacity measurement.
+# Remove the one conversion modifier, allow a daily recalculation, then read
+# the original additive slot modifier. All vanilla patrol slot sources use it.
+colony_event = {
+	id = rse_conversion.1
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		# Retire the 2.7.1 building-backed conversion and snapshots.
+		remove_carrier_flag = rse_patrol_drone_conversion_active
+		clear_variable = rse_patrol_drone_slots_snapshot
+		clear_variable = rse_patrol_drone_free_slots
+		clear_variable = rse_patrol_drone_remaining_slots
+		clear_variable = rse_patrol_drone_remaining_free
+		if = {
+			limit = { rse_patrol_conversion_enabled = yes }
+			if = {
+				limit = { NOT = { has_carrier_flag = rse_patrol_drone_conversion_rescan_pending } }
+				remove_modifier = rse_patrol_capacity_conversion
+				set_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+				colony_event = { id = rse_conversion.2 days = 1 }
+			}
+		}
+		else = {
+			remove_modifier = rse_patrol_capacity_conversion
+			remove_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+			clear_variable = rse_patrol_capacity_units
+			check_planet_employment = yes
+		}
+	}
+}
+
+colony_event = {
+	id = rse_conversion.2
+	hide_window = yes
+	is_triggered_only = yes
+	# Multiple building hooks in one day must not apply the conversion twice.
+	trigger = { has_carrier_flag = rse_patrol_drone_conversion_rescan_pending }
+	immediate = {
+		if = {
+			limit = { has_carrier_flag = rse_patrol_drone_conversion_rescan_pending }
+			remove_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+			if = {
+				limit = { rse_patrol_conversion_enabled = yes }
+				export_modifier_to_variable = {
+					modifier = job_patrol_drone_add
+					variable = rse_patrol_capacity_units
+				}
+				divide_variable = { which = rse_patrol_capacity_units value = 100 }
+				if = {
+					limit = { check_variable = { which = rse_patrol_capacity_units value > 0 } }
+					add_modifier = {
+						modifier = rse_patrol_capacity_conversion
+						days = -1
+						multiplier = rse_patrol_capacity_units
+					}
+				}
+			}
+			else = { clear_variable = rse_patrol_capacity_units }
+			check_planet_employment = yes
+		}
+	}
+}
+
+# Full rescan handles decreases and disabled buildings, not only new vacancies.
+colony_event = {
+	id = rse_conversion.3
+	hide_window = yes
+	is_triggered_only = yes
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					rse_patrol_conversion_enabled = yes
+					has_modifier = rse_patrol_capacity_conversion
+					has_carrier_flag = rse_patrol_drone_conversion_active
+					has_carrier_flag = rse_patrol_drone_conversion_rescan_pending
+				}
+			}
+			colony_event = { id = rse_conversion.1 }
+		}
+	}
+}

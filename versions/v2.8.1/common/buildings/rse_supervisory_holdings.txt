@@ -1,0 +1,41 @@
+holding_rse_social_observer = {
+	base_buildtime = @b2_time
+	owner_type = subject_holding
+	icon = holding_propaganda_office
+	planet_limit = 1
+	category = government
+
+	potential = { has_overlord_dlc = yes }
+	allow = {
+		custom_tooltip = {
+			fail_text = rse_requires_supervisory_zone
+			exists = planet.owner
+			planet.owner = {
+				is_specialist_subject_type = { TYPE = rse_supervisory_zone }
+			}
+		}
+	}
+	resources = {
+		category = planet_holdings
+		cost = { minerals = 500 }
+		upkeep = { energy = 5 }
+	}
+	planet_modifier = { monthly_loyalty = 0.5 }
+	triggered_country_modifier = {
+		potential = { always = yes }
+		modifier = {
+			pop_rse_home_service_bonus_workforce_mult = 0.05
+			pop_rse_activity_recorder_bonus_workforce_mult = 0.05
+			pop_rse_domestic_maid_bonus_workforce_mult = 0.05
+			pop_rse_visit_planner_bonus_workforce_mult = 0.05
+			pop_rse_processing_specialist_bonus_workforce_mult = 0.05
+			pop_rse_material_synthesizer_bonus_workforce_mult = 0.05
+		}
+	}
+	destroy_trigger = {
+		exists = planet.owner
+		planet.owner = {
+			NOT = { is_specialist_subject_type = { TYPE = rse_supervisory_zone } }
+		}
+	}
+}

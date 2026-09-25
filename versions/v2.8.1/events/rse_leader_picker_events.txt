@@ -1,0 +1,215 @@
+namespace = rse_picker
+
+# Opening/reopening starts a fresh list. Temporary indexes are country-local
+# through owned leaders, and expire when the dialog is cancelled or confirmed.
+country_event = {
+	id = rse_picker.1
+	title = rse_picker.1.name
+	desc = rse_picker.1.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	immediate = {
+		rse_picker_clear = yes
+		set_country_flag = rse_picker_open
+	}
+	option = {
+		name = rse_picker.class_official
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			any_owned_leader = { leader_class = official rse_surrounded_eligible_leader = yes }
+		}
+		hidden_effect = {
+			every_owned_leader = {
+				limit = { leader_class = official rse_surrounded_eligible_leader = yes }
+				root = { change_variable = { which = rse_picker_count value = 1 } }
+				set_variable = { which = rse_picker_index value = root.rse_picker_count }
+			}
+			country_event = { id = rse_picker.2 }
+		}
+	}
+	option = {
+		name = rse_picker.class_commander
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			any_owned_leader = { leader_class = commander rse_surrounded_eligible_leader = yes }
+		}
+		hidden_effect = {
+			every_owned_leader = {
+				limit = { leader_class = commander rse_surrounded_eligible_leader = yes }
+				root = { change_variable = { which = rse_picker_count value = 1 } }
+				set_variable = { which = rse_picker_index value = root.rse_picker_count }
+			}
+			country_event = { id = rse_picker.2 }
+		}
+	}
+	option = {
+		name = rse_picker.class_scientist
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			any_owned_leader = { leader_class = scientist rse_surrounded_eligible_leader = yes }
+		}
+		hidden_effect = {
+			every_owned_leader = {
+				limit = { leader_class = scientist rse_surrounded_eligible_leader = yes }
+				root = { change_variable = { which = rse_picker_count value = 1 } }
+				set_variable = { which = rse_picker_index value = root.rse_picker_count }
+			}
+			country_event = { id = rse_picker.2 }
+		}
+	}
+	option = { name = rse_picker.cancel hidden_effect = { rse_picker_clear = yes } }
+}
+
+country_event = {
+	id = rse_picker.2
+	title = rse_picker.2.name
+	desc = rse_picker.2.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	immediate = {
+		# Reset slot flags so a shorter final page never reuses an old target.
+		remove_country_flag = rse_picker_slot_1
+		remove_country_flag = rse_picker_slot_2
+		remove_country_flag = rse_picker_slot_3
+		remove_country_flag = rse_picker_slot_4
+		set_variable = { which = rse_picker_position value = rse_picker_offset }
+		change_variable = { which = rse_picker_position value = 1 }
+		every_owned_leader = {
+			limit = {
+				rse_surrounded_eligible_leader = yes
+				is_variable_set = rse_picker_index
+				check_variable = { which = rse_picker_index value = root.rse_picker_position }
+			}
+			save_event_target_as = rse_picker_candidate_1
+			root = { set_country_flag = rse_picker_slot_1 }
+		}
+		change_variable = { which = rse_picker_position value = 1 }
+		every_owned_leader = {
+			limit = {
+				rse_surrounded_eligible_leader = yes
+				is_variable_set = rse_picker_index
+				check_variable = { which = rse_picker_index value = root.rse_picker_position }
+			}
+			save_event_target_as = rse_picker_candidate_2
+			root = { set_country_flag = rse_picker_slot_2 }
+		}
+		change_variable = { which = rse_picker_position value = 1 }
+		every_owned_leader = {
+			limit = {
+				rse_surrounded_eligible_leader = yes
+				is_variable_set = rse_picker_index
+				check_variable = { which = rse_picker_index value = root.rse_picker_position }
+			}
+			save_event_target_as = rse_picker_candidate_3
+			root = { set_country_flag = rse_picker_slot_3 }
+		}
+		change_variable = { which = rse_picker_position value = 1 }
+		every_owned_leader = {
+			limit = {
+				rse_surrounded_eligible_leader = yes
+				is_variable_set = rse_picker_index
+				check_variable = { which = rse_picker_index value = root.rse_picker_position }
+			}
+			save_event_target_as = rse_picker_candidate_4
+			root = { set_country_flag = rse_picker_slot_4 }
+		}
+	}
+	option = {
+		name = rse_picker.candidate_1
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			has_country_flag = rse_picker_slot_1
+			exists = event_target:rse_picker_candidate_1
+			event_target:rse_picker_candidate_1 = {
+				rse_surrounded_eligible_leader = yes
+				owner = { is_same_value = root }
+			}
+		}
+		hidden_effect = {
+			event_target:rse_picker_candidate_1 = {
+				add_trait = { trait = leader_trait_rse_surrounded_pending }
+				save_event_target_as = rse_surrounded_selected
+			}
+			set_timed_country_flag = { flag = rse_surrounded_selection_cooldown days = 720 }
+			rse_picker_clear = yes
+			country_event = { id = rse_proto.201 }
+		}
+	}
+	option = {
+		name = rse_picker.candidate_2
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			has_country_flag = rse_picker_slot_2
+			exists = event_target:rse_picker_candidate_2
+			event_target:rse_picker_candidate_2 = {
+				rse_surrounded_eligible_leader = yes
+				owner = { is_same_value = root }
+			}
+		}
+		hidden_effect = {
+			event_target:rse_picker_candidate_2 = {
+				add_trait = { trait = leader_trait_rse_surrounded_pending }
+				save_event_target_as = rse_surrounded_selected
+			}
+			set_timed_country_flag = { flag = rse_surrounded_selection_cooldown days = 720 }
+			rse_picker_clear = yes
+			country_event = { id = rse_proto.201 }
+		}
+	}
+	option = {
+		name = rse_picker.candidate_3
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			has_country_flag = rse_picker_slot_3
+			exists = event_target:rse_picker_candidate_3
+			event_target:rse_picker_candidate_3 = {
+				rse_surrounded_eligible_leader = yes
+				owner = { is_same_value = root }
+			}
+		}
+		hidden_effect = {
+			event_target:rse_picker_candidate_3 = {
+				add_trait = { trait = leader_trait_rse_surrounded_pending }
+				save_event_target_as = rse_surrounded_selected
+			}
+			set_timed_country_flag = { flag = rse_surrounded_selection_cooldown days = 720 }
+			rse_picker_clear = yes
+			country_event = { id = rse_proto.201 }
+		}
+	}
+	option = {
+		name = rse_picker.candidate_4
+		trigger = {
+			NOT = { has_country_flag = rse_surrounded_selection_cooldown }
+			has_country_flag = rse_picker_slot_4
+			exists = event_target:rse_picker_candidate_4
+			event_target:rse_picker_candidate_4 = {
+				rse_surrounded_eligible_leader = yes
+				owner = { is_same_value = root }
+			}
+		}
+		hidden_effect = {
+			event_target:rse_picker_candidate_4 = {
+				add_trait = { trait = leader_trait_rse_surrounded_pending }
+				save_event_target_as = rse_surrounded_selected
+			}
+			set_timed_country_flag = { flag = rse_surrounded_selection_cooldown days = 720 }
+			rse_picker_clear = yes
+			country_event = { id = rse_proto.201 }
+		}
+	}
+	option = {
+		name = rse_picker.next
+		trigger = { check_variable = { which = rse_picker_count value > 4 } }
+		hidden_effect = {
+			change_variable = { which = rse_picker_offset value = 4 }
+			if = {
+				limit = { check_variable = { which = rse_picker_offset value >= rse_picker_count } }
+				set_variable = { which = rse_picker_offset value = 0 }
+			}
+			country_event = { id = rse_picker.2 }
+		}
+	}
+	option = { name = rse_picker.back hidden_effect = { country_event = { id = rse_picker.1 } } }
+	option = { name = rse_picker.cancel hidden_effect = { rse_picker_clear = yes } }
+}

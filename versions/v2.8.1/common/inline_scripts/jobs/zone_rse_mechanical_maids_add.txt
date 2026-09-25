@@ -1,0 +1,36 @@
+# Mechanical Maid jobs supplied by the Maid Industrial Zone.
+# The caller supplies 100 for a normal urban specialization and 200 for a
+# secondary-district specialization.  The planet-class multipliers mirror the
+# vanilla 4.4 zone job scripts: ecu-equivalent worlds (including Machine Worlds
+# and Ideal Paradise) use x3, while Ring Worlds use x5.
+
+# Ordinary planets
+triggered_district_planet_modifier = {
+	potential = {
+		planet_is_habitat_equivalent = no
+		planet_is_ecu_equivalent = no
+		planet_is_ring_world_equivalent = no
+	}
+	job_rse_mechanical_maid_add = $AMOUNT$
+}
+
+# Habitats
+triggered_district_planet_modifier = {
+	potential = { planet_is_habitat_equivalent = yes }
+	job_rse_mechanical_maid_add = $AMOUNT$
+	mult = owner.value:hab_void_dweller_jobs
+}
+
+# Ecumenopoleis, Machine Worlds and Ideal Paradise
+triggered_district_planet_modifier = {
+	potential = { planet_is_ecu_equivalent = yes }
+	job_rse_mechanical_maid_add = $AMOUNT$
+	mult = 3
+}
+
+# Ring Worlds
+triggered_district_planet_modifier = {
+	potential = { planet_is_ring_world_equivalent = yes }
+	job_rse_mechanical_maid_add = $AMOUNT$
+	mult = 5
+}

@@ -1,0 +1,20 @@
+# Leader scope. Used both when listing and when confirming a selection.
+rse_surrounded_eligible_leader = {
+	is_robotic_species = yes
+	is_ruler = no
+	is_gestalt_node = no
+	has_base_skill > 4
+	exists = owner
+	owner = {
+		rse_has_exclusive_route = yes
+		has_country_flag = rse_surrounded_traits_unlocked
+	}
+	OR = { leader_class = official leader_class = commander leader_class = scientist }
+	NOR = {
+		has_trait = leader_trait_rse_surrounded_pending
+		has_trait = leader_trait_rse_bridal
+		has_trait = leader_trait_rse_public_exposure
+		has_trait = leader_trait_rse_portable_jar
+	}
+}
+

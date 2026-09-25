@@ -1,0 +1,29 @@
+namespace = rse_defense
+
+# This event is called once when a ground battle begins. In 4.4 the on-action
+# supplies a colony scope, which can directly inspect its orbital defence.
+colony_event = {
+	id = rse_defense.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		exists = owner
+		owner = { rse_has_exclusive_route = yes }
+		exists = orbital_defence
+		orbital_defence.starbase? = {
+			has_starbase_building = ring_rse_maid_drop_protocol
+		}
+	}
+
+	immediate = {
+		while = {
+			count = 5
+			create_army = {
+				name = rse_combat_maid_army
+				owner = root.owner
+				type = rse_combat_maid_army
+			}
+		}
+	}
+}

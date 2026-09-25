@@ -1,0 +1,10 @@
+# Colony scope. Base and Center share ONE conversion modifier.
+rse_patrol_conversion_enabled = {
+	exists = owner
+	is_occupied_flag = no
+	owner = { rse_has_exclusive_route = yes }
+	OR = {
+		has_active_building = building_rse_maid_base
+		has_active_building = building_rse_maid_center
+	}
+}

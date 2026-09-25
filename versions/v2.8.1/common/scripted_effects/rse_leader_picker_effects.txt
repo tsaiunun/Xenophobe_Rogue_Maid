@@ -1,0 +1,12 @@
+# Country scope. Do not clear the selected leader event target: stage two uses it.
+rse_picker_clear = {
+	remove_country_flag = rse_picker_open
+	every_owned_leader = { clear_variable = rse_picker_index }
+	set_variable = { which = rse_picker_count value = 0 }
+	set_variable = { which = rse_picker_offset value = 0 }
+	clear_variable = rse_picker_position
+	remove_country_flag = rse_picker_slot_1
+	remove_country_flag = rse_picker_slot_2
+	remove_country_flag = rse_picker_slot_3
+	remove_country_flag = rse_picker_slot_4
+}

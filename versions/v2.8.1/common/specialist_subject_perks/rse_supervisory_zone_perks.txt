@@ -1,0 +1,31 @@
+# Each specialist level replaces the previous level's main perk.  Values below
+# are therefore the requested final values, not incremental additions.
+rse_supervisory_zone_1 = {
+	main_perk = yes
+	icon = "GFX_specialist_perk_scholarium_1_overlord_modifier"
+	overlord_modifier = {
+		planet_amenities_add = 100
+		ship_speed_mult = 0.05
+		divided_patrongage_max_subjects = 1
+	}
+}
+
+rse_supervisory_zone_2 = {
+	main_perk = yes
+	icon = "GFX_specialist_perk_scholarium_1_overlord_modifier"
+	overlord_modifier = {
+		planet_amenities_add = 200
+		ship_speed_mult = 0.10
+		divided_patrongage_max_subjects = 2
+	}
+}
+
+rse_supervisory_zone_3 = {
+	main_perk = yes
+	icon = "GFX_specialist_perk_scholarium_1_overlord_modifier"
+	overlord_modifier = {
+		planet_amenities_add = 300
+		ship_speed_mult = 0.15
+		divided_patrongage_max_subjects = 3
+	}
+}

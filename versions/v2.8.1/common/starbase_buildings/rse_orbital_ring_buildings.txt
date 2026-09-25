@@ -1,0 +1,112 @@
+ring_rse_maid_drop_protocol = {
+	icon = "GFX_orbitalring_food_hub"
+	construction_days = 360
+	starbase_type = orbital_ring
+	category = sm_colony_cat
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_mechanical_maids
+		}
+		is_orbital_ring = yes
+	}
+	planet_modifier = {
+		planet_physicists_physics_research_produces_add = 1
+		planet_biologists_society_research_produces_add = 1
+		planet_engineers_engineering_research_produces_add = 1
+		pop_rse_mechanical_maid_bonus_workforce_mult = @rse_maid_orbital_efficiency
+	}
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 200 rare_crystals = 100 }
+		upkeep = { energy = 5 rare_crystals = 1 }
+	}
+	show_in_tech = "tech_rse_mechanical_maids"
+	show_tech_unlock_if = { has_overlord_dlc = yes }
+	ai_weight = { weight = 80 }
+}
+
+# V2.0 empire-unique media network buildings -------------------------------
+
+rse_planet_tv_center = {
+	icon = "GFX_starbase_recruitment_office"
+	construction_days = 360
+	empire_limit = 1
+	category = sm_utility_cat
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_service_specialization
+		}
+		is_normal_starbase = yes
+	}
+	country_modifier = {
+		planet_bio_trophies_unity_produces_add = 1
+		diplomacy_influence_upkeep_mult = -0.50
+	}
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 300 consumer_goods = 200 }
+		upkeep = { energy = 5 }
+	}
+	show_in_tech = "tech_rse_service_specialization"
+	ai_weight = { weight = 80 }
+}
+
+rse_custom_program_center = {
+	icon = "GFX_starbase_recruitment_office"
+	construction_days = 360
+	empire_limit = 1
+	category = sm_utility_cat
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_personal_records
+		}
+		is_normal_starbase = yes
+	}
+	country_modifier = {
+		custom_tooltip = rse_custom_program_center_modifier_tooltip
+		show_only_custom_tooltip = no
+		country_base_influence_produces_add = 1
+		leaders_upkeep_mult = -0.10
+		species_leader_exp_gain = 0.10
+	}
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 500 consumer_goods = 300 }
+		upkeep = { energy = 8 }
+	}
+	show_in_tech = "tech_rse_personal_records"
+	ai_weight = { weight = 90 }
+}
+
+rse_underground_studio = {
+	icon = "GFX_starbase_recruitment_office"
+	construction_days = 480
+	empire_limit = 1
+	category = sm_utility_cat
+	potential = {
+		exists = owner
+		owner = {
+			rse_has_exclusive_route = yes
+			has_technology = tech_rse_service_project
+		}
+		is_normal_starbase = yes
+	}
+	country_modifier = {
+		pop_bio_trophy_bonus_workforce_mult = 0.10
+		envoy_improve_relations_mult = 0.50
+		spy_network_daily_value_mult = 0.50
+	}
+	resources = {
+		category = starbase_buildings
+		cost = { alloys = 800 rare_crystals = 100 }
+		upkeep = { energy = 12 rare_crystals = 1 }
+	}
+	show_in_tech = "tech_rse_service_project"
+	ai_weight = { weight = 100 }
+}

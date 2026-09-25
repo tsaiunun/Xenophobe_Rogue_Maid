@@ -1,0 +1,18 @@
+# Country scope: the prospective overlord, after the original release completes.
+# Event targets are local to each offer, so concurrent releases do not collide.
+rse_released_subject_conversion_allowed = {
+	rse_is_rogue_servitor = yes
+	rse_has_exclusive_route = yes
+	exists = event_target:rse_released_subject
+	event_target:rse_released_subject = {
+		is_country_type = default
+		exists = overlord
+		overlord = { is_same_value = root }
+		NOT = { has_country_flag = rse_released_subject_converted }
+		owner_main_species = {
+			is_robotic_species = no
+			has_trait = trait_rse_protected_founder
+		}
+	}
+	owner_main_species = { is_robotic_species = yes }
+}

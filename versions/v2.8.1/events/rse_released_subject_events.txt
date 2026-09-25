@@ -1,0 +1,78 @@
+namespace = rse_subject
+
+# Runs only on a freshly released sector, never on ordinary diplomacy/war vassals.
+country_event = {
+	id = rse_subject.1
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		is_country_type = default
+		exists = from
+		from = { rse_is_rogue_servitor = yes rse_has_exclusive_route = yes }
+		exists = overlord
+		overlord = { is_same_value = from }
+		owner_main_species = { is_robotic_species = no has_trait = trait_rse_protected_founder }
+		NOT = { has_country_flag = rse_released_subject_offer_sent }
+	}
+	immediate = {
+		# Mark before queueing: repeated release callbacks must not duplicate offers.
+		set_country_flag = rse_released_subject_offer_sent
+		save_event_target_as = rse_released_subject
+		from = { country_event = { id = rse_subject.2 days = 1 } }
+	}
+}
+
+country_event = {
+	id = rse_subject.2
+	title = rse_subject.2.name
+	desc = rse_subject.2.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	option = {
+		name = rse_subject.2.convert
+		trigger = { rse_released_subject_conversion_allowed = yes }
+		custom_tooltip = rse_subject.2.convert_effect
+		ai_chance = { base = 100 }
+		hidden_effect = {
+			# Recheck at confirmation; subject may have changed overlord while open.
+			if = {
+				limit = { rse_released_subject_conversion_allowed = yes }
+				save_event_target_as = rse_release_overlord
+				owner_main_species = { save_event_target_as = rse_release_machine_species }
+				event_target:rse_released_subject = {
+					owner_main_species = { save_event_target_as = rse_release_organic_species }
+					rse_establish_released_servitor = yes
+				}
+			}
+		}
+	}
+	option = {
+		name = rse_subject.2.keep
+		ai_chance = { base = 0 }
+		# Deliberately no effect: original country, population and contract survive.
+	}
+}
+
+# Run after government/species changes have settled, once per converted country.
+country_event = {
+	id = rse_subject.3
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = rse_released_subject_converted
+		rse_is_rogue_servitor = yes
+		NOT = { has_country_flag = rse_released_subject_council_ready }
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_country_flag = rse_released_subject_council_ready } }
+			set_country_flag = rse_released_subject_council_ready
+			country_event = { id = game_start.70 }
+			create_leader = { class = official species = owner_main_species name = random skill = 1 }
+			create_leader = { class = commander species = owner_main_species name = random skill = 1 }
+			create_leader = { class = scientist species = owner_main_species name = random skill = 1 }
+			country_event = { id = game_start.71 }
+			refresh_leader_pool = yes
+		}
+	}
+}

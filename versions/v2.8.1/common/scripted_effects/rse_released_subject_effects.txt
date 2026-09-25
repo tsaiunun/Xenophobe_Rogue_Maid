@@ -1,0 +1,68 @@
+# Subject country scope. Separate from the war conversion: never change its
+# subject agreement, purge population, or apply the database-cleaning modifier.
+rse_establish_released_servitor = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = rse_released_subject_converted }
+			exists = event_target:rse_release_overlord
+			exists = event_target:rse_release_machine_species
+			exists = event_target:rse_release_organic_species
+			exists = overlord
+			overlord = { is_same_value = event_target:rse_release_overlord }
+		}
+		set_country_flag = rse_released_subject_converted
+		# Explicit species/authority pairing; change_all=no preserves organic Pops.
+		change_dominant_species = { species = event_target:rse_release_machine_species change_all = no }
+		copy_ethos_and_authority = event_target:rse_release_overlord
+		set_origin = origin_default
+		change_government = {
+			authority = auth_machine_intelligence
+			civics = { civic = civic_machine_servitor civic = civic_machine_maintenance_protocols }
+			cooldown = no
+			remove_invalid_civics = yes
+		}
+		set_built_species = event_target:rse_release_machine_species
+		set_country_flag = rse_route_chosen
+		set_country_flag = rse_route_exclusive_service
+		remove_country_flag = rse_route_universal_shelter
+		set_policy = { policy = rse_organic_growth_policy option = rse_growth_maintain cooldown = no }
+		set_country_flag = rse_growth_policy_initialized_v2
+		add_research_option = tech_rse_personal_records
+		add_research_option = tech_rse_secret_project
+		set_country_flag = rse_secret_project_option_granted
+
+		every_owned_planet = {
+			colony = {
+				# Seed only colonies with no founder-family machine population.
+				if = {
+					limit = { NOT = { any_owned_pop_group = { is_same_species = event_target:rse_release_machine_species } } }
+					create_pop_group = { species = event_target:rse_release_machine_species size = 200 }
+				}
+			}
+		}
+		every_owned_species = {
+			if = {
+				limit = { is_same_species = event_target:rse_release_organic_species }
+				set_species_flag = rse_founder_organic_species
+				set_citizenship_type = { type = citizenship_organic_trophy country = prev cooldown = no }
+				set_living_standard = { type = living_standard_organic_trophy country = prev }
+			}
+			else_if = {
+				limit = { is_robotic_species = yes }
+				set_citizenship_type = { type = citizenship_full_machine country = prev cooldown = no }
+				set_living_standard = { type = living_standard_hive_mind country = prev }
+			}
+			else = {
+				set_citizenship_type = { type = citizenship_rse_general_organic country = prev cooldown = no }
+				set_living_standard = { type = living_standard_rse_general_organic country = prev }
+			}
+		}
+
+		# Replace the freshly generated administration, using dismissal not death.
+		every_owned_leader = { kill_leader = { fire = yes show_notification = no } }
+		create_leader = { class = random_ruler species = owner_main_species name = random skill = 1 immortal = yes }
+		assign_leader = last_created_leader
+		country_event = { id = rse_subject.3 days = 1 }
+		every_owned_planet = { colony = { check_planet_employment = yes } }
+	}
+}

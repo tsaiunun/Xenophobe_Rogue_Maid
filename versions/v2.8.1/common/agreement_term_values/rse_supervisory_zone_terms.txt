@@ -1,0 +1,5 @@
+specialist_rse_supervisory_zone = {
+	term = specialist_type
+	activate_effect = { convert_to_specialist = specialist_rse_supervisory_zone }
+	potential = { agreement_preset = preset_rse_supervisory_zone }
+}

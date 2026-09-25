@@ -1,0 +1,51 @@
+# Colony scope. Rebuild once per month, with independent caps and visible values.
+rse_update_growth_simulators = {
+	remove_modifier = rse_organic_simulator_scaled
+	remove_modifier = rse_desire_simulator_scaled
+	set_variable = { which = rse_organic_simulator_count value = 0 }
+	set_variable = { which = rse_desire_simulator_count value = 0 }
+	if = {
+		limit = {
+			exists = owner
+			owner = { rse_has_exclusive_route = yes }
+			is_occupied_flag = no
+		}
+		export_trigger_value_to_variable = {
+			trigger = count_owned_pop_amount
+			parameters = { limit = { has_trait = trait_rse_organic_simulator } }
+			variable = rse_organic_simulator_count
+		}
+		if = {
+			limit = { check_variable = { which = rse_organic_simulator_count value > @rse_organic_simulator_pop_cap } }
+			set_variable = { which = rse_organic_simulator_count value = @rse_organic_simulator_pop_cap }
+		}
+		multiply_variable = { which = rse_organic_simulator_count value = @rse_organic_simulator_assembly_per_pop }
+		if = {
+			limit = { check_variable = { which = rse_organic_simulator_count value > 0 } }
+			add_modifier = {
+				modifier = rse_organic_simulator_scaled
+				days = -1
+				multiplier = rse_organic_simulator_count
+			}
+		}
+		export_trigger_value_to_variable = {
+			trigger = count_owned_pop_amount
+			parameters = { limit = { has_trait = trait_rse_desire_simulator } }
+			variable = rse_desire_simulator_count
+		}
+		if = {
+			limit = { check_variable = { which = rse_desire_simulator_count value > @rse_desire_simulator_pop_cap } }
+			set_variable = { which = rse_desire_simulator_count value = @rse_desire_simulator_pop_cap }
+		}
+		multiply_variable = { which = rse_desire_simulator_count value = @rse_desire_simulator_growth_per_pop }
+		if = {
+			limit = { check_variable = { which = rse_desire_simulator_count value > 0 } }
+			add_modifier = {
+				modifier = rse_desire_simulator_scaled
+				days = -1
+				multiplier = rse_desire_simulator_count
+			}
+		}
+	}
+}
+

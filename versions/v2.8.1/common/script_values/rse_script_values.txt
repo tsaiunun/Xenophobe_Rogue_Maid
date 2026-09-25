@@ -1,0 +1,47 @@
+# Legacy cap-value names retained for compatibility. Current simulators use
+# rse_update_growth_simulators / monthly Intelligence calculation instead.
+
+rse_organic_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_organic_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_organic_simulator_cap_multiplier = {
+	base = @rse_organic_simulator_pop_cap
+	divide = value:rse_organic_simulator_pop_amount
+	max = 1
+}
+
+rse_intelligence_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_intelligence_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_intelligence_simulator_cap_multiplier = {
+	base = @rse_intelligence_simulator_pop_cap
+	divide = value:rse_intelligence_simulator_pop_amount
+	max = 1
+}
+
+rse_desire_simulator_pop_amount = {
+	complex_trigger_modifier = {
+		trigger = count_owned_pop_amount
+		parameters = { limit = { has_trait = trait_rse_desire_simulator } }
+		mode = add
+	}
+	min = 1
+}
+
+rse_desire_simulator_cap_multiplier = {
+	base = @rse_desire_simulator_pop_cap
+	divide = value:rse_desire_simulator_pop_amount
+	max = 1
+}

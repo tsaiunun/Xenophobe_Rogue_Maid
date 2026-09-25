@@ -1,0 +1,338 @@
+namespace = rse_proto
+
+# Monthly maintenance for the formal V2 leader systems.
+country_event = {
+	id = rse_proto.100
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = { is_country_type = default }
+	immediate = {
+		# Remove a stale stage-one marker from older prototype saves.
+		every_owned_leader = {
+			limit = {
+				has_trait = leader_trait_rse_surrounded_pending
+				OR = {
+					has_trait = leader_trait_rse_bridal
+					has_trait = leader_trait_rse_public_exposure
+					has_trait = leader_trait_rse_portable_jar
+				}
+			}
+			remove_trait = leader_trait_rse_surrounded_pending
+		}
+
+		if = {
+			limit = { has_country_flag = rse_surrounded_traits_unlocked }
+			if = {
+				limit = {
+					exists = ruler
+					ruler = { NOT = { has_trait = leader_trait_rse_erotic_simulator } }
+				}
+				ruler = { add_trait = { trait = leader_trait_rse_erotic_simulator } }
+			}
+			every_owned_leader = {
+				limit = {
+					is_robotic_species = yes
+					NOT = { has_trait = leader_trait_rse_expanded_selection }
+				}
+				add_trait = { trait = leader_trait_rse_expanded_selection }
+			}
+		}
+		every_owned_leader = {
+			limit = {
+				has_trait = leader_trait_rse_expanded_selection
+				is_robotic_species = no
+			}
+			remove_trait = leader_trait_rse_expanded_selection
+		}
+
+		if = {
+			limit = { any_owned_leader = { has_trait = leader_trait_rse_public_exposure } }
+			set_country_flag = rse_public_exposure_network
+		}
+		else = { remove_country_flag = rse_public_exposure_network }
+
+		if = {
+			limit = { any_owned_leader = { has_trait = leader_trait_rse_portable_jar } }
+			set_country_flag = rse_portable_space_unlocked
+			every_owned_leader = {
+				limit = {
+					is_robotic_species = yes
+					NOT = { has_trait = leader_trait_rse_portable_jar }
+					NOT = { has_trait = leader_trait_rse_portable_jar_network }
+				}
+				add_trait = { trait = leader_trait_rse_portable_jar_network }
+			}
+		}
+		else = { remove_country_flag = rse_portable_space_unlocked }
+		every_owned_leader = {
+			limit = {
+				has_trait = leader_trait_rse_portable_jar_network
+				OR = {
+					is_robotic_species = no
+					has_trait = leader_trait_rse_portable_jar
+					owner = { NOT = { any_owned_leader = { has_trait = leader_trait_rse_portable_jar } } }
+				}
+			}
+			remove_trait = leader_trait_rse_portable_jar_network
+		}
+
+		if = {
+			limit = {
+				NOT = { has_country_flag = rse_surrounded_event_completed }
+				any_owned_leader = { has_leader_flag = rse_first_trophy_leader }
+				any_owned_leader = {
+					leader_class = scientist
+					is_robotic_species = yes
+					is_ruler = no
+					is_gestalt_node = no
+				}
+			}
+			change_variable = { which = rse_surrounded_months value = 1 }
+			if = {
+				limit = { check_variable = { which = rse_surrounded_months value >= 12 } }
+				country_event = { id = rse_proto.200 }
+			}
+		}
+	}
+}
+
+# FROM is the deceased leader and THIS is the owning country. Consciousness
+# control applies to protected organic leaders; Bridal uses the same clone path
+# for mechanical leaders. clone_leader preserves name, portrait, class, level
+# and traits but does not restore assignments or a council seat.
+country_event = {
+	id = rse_proto.20
+	hide_window = yes
+	is_triggered_only = yes
+	trigger = {
+		rse_has_exclusive_route = yes
+		OR = {
+			AND = {
+				has_technology = tech_rse_mind_control
+				from = {
+					is_robotic_species = no
+					has_trait = leader_trait_rse_personal_service
+					has_trait = leader_trait_rse_mind_control
+				}
+			}
+			from = {
+				is_robotic_species = yes
+				has_trait = leader_trait_rse_bridal
+			}
+		}
+	}
+	immediate = {
+		if = {
+			limit = { from = { has_leader_flag = rse_first_trophy_leader } }
+			set_country_flag = rse_replacing_first_trophy_leader
+		}
+		clone_leader = {
+			target = from
+			effect = {
+				set_leader_flag = rse_consciousness_replacement
+				if = {
+					limit = { owner = { has_country_flag = rse_replacing_first_trophy_leader } }
+					set_leader_flag = rse_first_trophy_leader
+				}
+			}
+		}
+		remove_country_flag = rse_replacing_first_trophy_leader
+		from = { set_leader_flag = leader_death_events_blocked }
+	}
+}
+
+# Stage one samples up to three existing mechanical scientists, matching the
+# first Bio-Trophy leader's class. Only the selected candidate receives the
+# temporary marker; stage two resolves that same leader.
+country_event = {
+	id = rse_proto.200
+	title = rse_proto.200.name
+	desc = rse_proto.200.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	immediate = {
+		clear_variable = rse_surrounded_months
+		random_owned_leader = {
+			limit = { has_leader_flag = rse_first_trophy_leader }
+			save_event_target_as = rse_first_trophy_leader_target
+		}
+		random_owned_leader = {
+			limit = {
+				leader_class = scientist
+				is_robotic_species = yes
+				is_ruler = no
+				is_gestalt_node = no
+				NOR = {
+					has_trait = leader_trait_rse_surrounded_pending
+					has_trait = leader_trait_rse_bridal
+					has_trait = leader_trait_rse_public_exposure
+					has_trait = leader_trait_rse_portable_jar
+				}
+			}
+			save_event_target_as = rse_surrounded_candidate_1
+		}
+		if = {
+			limit = { exists = event_target:rse_surrounded_candidate_1 }
+			random_owned_leader = {
+				limit = {
+					leader_class = scientist
+					is_robotic_species = yes
+					is_ruler = no
+					is_gestalt_node = no
+					NOT = { is_same_value = event_target:rse_surrounded_candidate_1 }
+					NOR = {
+						has_trait = leader_trait_rse_surrounded_pending
+						has_trait = leader_trait_rse_bridal
+						has_trait = leader_trait_rse_public_exposure
+						has_trait = leader_trait_rse_portable_jar
+					}
+				}
+				save_event_target_as = rse_surrounded_candidate_2
+			}
+		}
+		if = {
+			limit = { exists = event_target:rse_surrounded_candidate_2 }
+			random_owned_leader = {
+				limit = {
+					leader_class = scientist
+					is_robotic_species = yes
+					is_ruler = no
+					is_gestalt_node = no
+					NOR = {
+						is_same_value = event_target:rse_surrounded_candidate_1
+						is_same_value = event_target:rse_surrounded_candidate_2
+						has_trait = leader_trait_rse_surrounded_pending
+						has_trait = leader_trait_rse_bridal
+						has_trait = leader_trait_rse_public_exposure
+						has_trait = leader_trait_rse_portable_jar
+					}
+				}
+				save_event_target_as = rse_surrounded_candidate_3
+			}
+		}
+	}
+	option = {
+		name = rse_proto.200.a
+		trigger = { exists = event_target:rse_surrounded_candidate_1 }
+		event_target:rse_surrounded_candidate_1 = {
+			add_trait = { trait = leader_trait_rse_surrounded_pending }
+			save_event_target_as = rse_surrounded_selected
+		}
+		country_event = { id = rse_proto.201 }
+	}
+	option = {
+		name = rse_proto.200.b
+		trigger = { exists = event_target:rse_surrounded_candidate_2 }
+		event_target:rse_surrounded_candidate_2 = {
+			add_trait = { trait = leader_trait_rse_surrounded_pending }
+			save_event_target_as = rse_surrounded_selected
+		}
+		country_event = { id = rse_proto.201 }
+	}
+	option = {
+		name = rse_proto.200.c
+		trigger = { exists = event_target:rse_surrounded_candidate_3 }
+		event_target:rse_surrounded_candidate_3 = {
+			add_trait = { trait = leader_trait_rse_surrounded_pending }
+			save_event_target_as = rse_surrounded_selected
+		}
+		country_event = { id = rse_proto.201 }
+	}
+	option = {
+		name = rse_proto.200.none
+		trigger = { NOT = { exists = event_target:rse_surrounded_candidate_1 } }
+	}
+}
+
+country_event = {
+	id = rse_proto.201
+	title = rse_proto.201.name
+	desc = rse_proto.201.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	immediate = {
+		set_country_flag = rse_surrounded_event_completed
+		set_country_flag = rse_surrounded_traits_unlocked
+	}
+	option = {
+		name = rse_proto.201.a
+		trigger = {
+			exists = event_target:rse_surrounded_selected
+			event_target:rse_surrounded_selected = {
+				owner = { is_same_value = root }
+				has_trait = leader_trait_rse_surrounded_pending
+			}
+		}
+		custom_tooltip = rse_proto.201.a.effect
+		hidden_effect = {
+			event_target:rse_surrounded_selected = {
+				remove_trait = leader_trait_rse_surrounded_pending
+				add_trait = { trait = leader_trait_rse_bridal }
+			}
+		}
+	}
+	option = {
+		name = rse_proto.201.b
+		trigger = {
+			exists = event_target:rse_surrounded_selected
+			event_target:rse_surrounded_selected = {
+				owner = { is_same_value = root }
+				has_trait = leader_trait_rse_surrounded_pending
+			}
+		}
+		custom_tooltip = rse_proto.201.b.effect
+		hidden_effect = {
+			event_target:rse_surrounded_selected = {
+				remove_trait = leader_trait_rse_surrounded_pending
+				add_trait = { trait = leader_trait_rse_public_exposure }
+			}
+		}
+	}
+	option = {
+		name = rse_proto.201.c
+		trigger = {
+			exists = event_target:rse_surrounded_selected
+			event_target:rse_surrounded_selected = {
+				owner = { is_same_value = root }
+				has_trait = leader_trait_rse_surrounded_pending
+			}
+		}
+		custom_tooltip = rse_proto.201.c.effect
+		hidden_effect = {
+			event_target:rse_surrounded_selected = {
+				remove_trait = leader_trait_rse_surrounded_pending
+				add_trait = { trait = leader_trait_rse_portable_jar }
+			}
+		}
+	}
+	option = {
+		name = rse_picker.unavailable
+		trigger = {
+			NAND = {
+				exists = event_target:rse_surrounded_selected
+				event_target:rse_surrounded_selected = {
+					owner = { is_same_value = root }
+					has_trait = leader_trait_rse_surrounded_pending
+				}
+			}
+		}
+	}
+
+}
+
+country_event = {
+	id = rse_proto.241
+	title = rse_proto.241.name
+	desc = rse_proto.241.desc
+	picture = GFX_evt_metropolis
+	is_triggered_only = yes
+	immediate = {
+		return_leader_from_exile = rse_white_leader_actor
+		remove_country_flag = rse_white_leader_active
+		event_target:rse_white_leader_planet = {
+			remove_modifier = rse_white_leader_touring
+			add_modifier = { modifier = rse_white_leader_common_sense days = 3600 }
+		}
+	}
+	option = { name = OK }
+}

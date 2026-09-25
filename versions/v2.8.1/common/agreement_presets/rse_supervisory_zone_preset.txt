@@ -1,0 +1,27 @@
+preset_rse_supervisory_zone = {
+	icon = "GFX_diplomacy_status_is_vassal"
+	term_data = {
+		discrete_terms = {
+			{ key = specialist_type value = specialist_rse_supervisory_zone }
+			{ key = subject_integration value = subject_can_be_integrated }
+			{ key = subject_diplomacy value = subject_can_not_do_diplomacy }
+			{ key = subject_expand value = subject_can_expand }
+			{ key = joins_overlord_wars value = joins_overlord_wars_none }
+			{ key = joins_subject_wars value = joins_subject_wars_defensive }
+			{ key = subject_holdings_limit value = subject_holdings_limit_2 }
+			{ key = subject_sensors value = subject_gets_sensors }
+			{ key = subject_loyalty value = subject_loyalty_effects }
+			{ key = protectorate value = subject_is_not_protectorate }
+		}
+	}
+	hidden = no
+	should_ai_use_for_proposals = no
+	overlord_weight = { base = 100 }
+	subject_weight = { base = 0 }
+	potential = {
+		from = {
+			rse_has_exclusive_route = yes
+			has_ascension_perk = ap_rse_master_maid
+		}
+	}
+}

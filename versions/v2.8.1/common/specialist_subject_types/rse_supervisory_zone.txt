@@ -1,0 +1,22 @@
+@rse_supervisory_level_2_xp = 600
+@rse_supervisory_level_3_xp = 1800
+
+specialist_rse_supervisory_zone = {
+	icon = "GFX_diplomacy_specialist_subject_scholarium"
+	icon_large = "GFX_diplomacy_specialist_subject_scholarium_large"
+	preferred_ethic = ethic_materialist
+	base_conversion_time = 15
+	levels = {
+		{
+			experience_needed_for_next_level = @rse_supervisory_level_2_xp
+			perks = { rse_supervisory_zone_1 }
+		}
+		{
+			experience_needed_for_next_level = @rse_supervisory_level_3_xp
+			perks = { rse_supervisory_zone_2 }
+		}
+		{
+			perks = { rse_supervisory_zone_3 }
+		}
+	}
+}
